@@ -40,6 +40,7 @@ public class LoginFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         loginLabel.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
+        loginLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         loginLabel.setText("Login");
         loginLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
