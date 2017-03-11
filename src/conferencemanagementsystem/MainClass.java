@@ -15,20 +15,21 @@ import java.sql.SQLException;
  */
 public class MainClass {
     static public UtenteClass utente = new UtenteClass();
-   
+    static public DataBaseManagement db = new DataBaseManagement();
     
     public static void main(String[] args)  {
-      /*
-        DataBaseManagement db = new DataBaseManagement();
-       String query;
+        
+       /*
+        String query;
         query = "CREATE TABLE IF NOT EXISTS utenti (id INT NOT NULL PRIMARY KEY)";
        db.inviaQuery(query);
       */ 
        //All'apertura viene caricato lo StartFrame
-       StartFrame startF = new StartFrame(new javax.swing.JFrame(), true);
-       startF.setVisible(true);
+       //StartFrame startF = new StartFrame(new javax.swing.JFrame(), true);
+       //startF.setVisible(true);
        
-       
+       CreaConferenzaFrame t = new CreaConferenzaFrame();
+       t.setVisible(true);
        
     }
 

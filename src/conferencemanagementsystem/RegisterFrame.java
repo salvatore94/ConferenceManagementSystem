@@ -10,6 +10,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
+import conferencemanagementsystem.MainClass;
 /**
  *
  * @author salvatore
@@ -135,8 +136,14 @@ public class RegisterFrame extends javax.swing.JFrame {
             creaJDialog("Errore", "Le password non coincidono");
         } else {
             //Inserire il record nel db
+            // MainClass.db.inviaQuery("");
+            MainClass.utente.setNomeUtente(nomeUtente);
+            MainClass.utente.setEmail(email);
+            MainClass.utente.setPassword(password);
+            
             creaJDialog("Successo", "Registrazione avvenuta");
             this.dispose();
+            //Reindirizzare alla pagina di Login
         }
     }//GEN-LAST:event_registratiButtonActionPerformed
     
