@@ -5,6 +5,9 @@
  */
 package conferencemanagementsystem;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 
 /**
  *
@@ -12,14 +15,15 @@ package conferencemanagementsystem;
  */
 public class MainClass {
     static public UtenteClass utente = new UtenteClass();
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
+   
+    
+    public static void main(String[] args)  {
        DataBaseManagement db = new DataBaseManagement();
-      // db.startDBConnection();
+       String query;
+        query = "CREATE TABLE IF NOT EXISTS utenti (id INT NOT NULL PRIMARY KEY)";
+       db.inviaQuery(query);
        
-        //All'apertura viene caricato lo StartFrame
+       //All'apertura viene caricato lo StartFrame
        StartFrame startF = new StartFrame(new javax.swing.JFrame(), true);
        startF.setVisible(true);
        
