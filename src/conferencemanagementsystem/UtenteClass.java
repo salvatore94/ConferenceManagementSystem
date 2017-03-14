@@ -10,29 +10,57 @@ package conferencemanagementsystem;
  * @author salvatore
  */
 public class UtenteClass {
-    private String nomeUtente;
+    private int idUtente;
+    private String nome;
+    private String cognome;
     private String email;
     private String password;
     private String ruolo;
     
-    public void setNomeUtente(String nome) {
-        nomeUtente = nome;     
+    public UtenteClass (){}
+    
+    public UtenteClass(int _idUtente, String _nome, String _cognome, String _email, String _password, String _ruolo) {
+        this.setId(_idUtente);
+        this.setNome(_nome);
+        this.setCognome(_cognome);
+        this.setPassword(_password);
+        this.setRuolo(_ruolo);
     }
     
-    public void setEmail(String emailStr){
-        email = emailStr;
+    private void setId (int id){
+        this.idUtente = idUtente;
     }
     
-    public void setPassword (String pass) {
-        password = pass;
+    public void setNome(String _nome) {
+        this.nome = _nome;     
     }
     
-    public void setRuolo (String r) {
-        ruolo = r;
+    public void setCognome (String _cognome) {
+        this.cognome = _cognome;
     }
     
-    public final String getNomeUtente(){
-        return nomeUtente;
+    public void setEmail(String _email){
+        this.email = _email;
+    }
+    
+    public void setPassword (String _password) {
+        this.password = _password;
+    }
+    
+    public void setRuolo (String _ruolo) {
+        ruolo = _ruolo;
+    }
+    
+    public int getId(){
+        return idUtente;
+    }
+    
+    public final String getNome(){
+        return nome;
+    }
+    
+    public final String getCognome(){
+        return cognome;
     }
     
     public final String getEmail(){
