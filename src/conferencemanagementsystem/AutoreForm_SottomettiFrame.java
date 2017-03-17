@@ -9,12 +9,12 @@ package conferencemanagementsystem;
  *
  * @author salvatore
  */
-public class AutoreForm_Sottometti extends javax.swing.JFrame {
+public class AutoreForm_SottomettiFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form AutoreForm_Sottometti
      */
-    public AutoreForm_Sottometti() {
+    public AutoreForm_SottomettiFrame() {
         initComponents();
     }
 
@@ -153,20 +153,21 @@ public class AutoreForm_Sottometti extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AutoreForm_Sottometti.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AutoreForm_SottomettiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AutoreForm_Sottometti.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AutoreForm_SottomettiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AutoreForm_Sottometti.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AutoreForm_SottomettiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AutoreForm_Sottometti.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AutoreForm_SottomettiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AutoreForm_Sottometti().setVisible(true);
+                new AutoreForm_SottomettiFrame().setVisible(true);
             }
         });
     }

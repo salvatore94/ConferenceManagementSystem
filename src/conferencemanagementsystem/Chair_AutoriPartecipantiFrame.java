@@ -9,12 +9,12 @@ package conferencemanagementsystem;
  *
  * @author salvatore
  */
-public class Chair_AutoriPartecipanti extends javax.swing.JFrame {
+public class Chair_AutoriPartecipantiFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form Chair_AutoriPartecipanti
      */
-    public Chair_AutoriPartecipanti() {
+    public Chair_AutoriPartecipantiFrame() {
         initComponents();
     }
 
@@ -114,20 +114,21 @@ public class Chair_AutoriPartecipanti extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Chair_AutoriPartecipanti.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Chair_AutoriPartecipantiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Chair_AutoriPartecipanti.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Chair_AutoriPartecipantiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Chair_AutoriPartecipanti.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Chair_AutoriPartecipantiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Chair_AutoriPartecipanti.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Chair_AutoriPartecipantiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Chair_AutoriPartecipanti().setVisible(true);
+                new Chair_AutoriPartecipantiFrame().setVisible(true);
             }
         });
     }
