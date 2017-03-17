@@ -28,9 +28,11 @@ public class DataBaseManagement {
             System.err.println(e);
         }
     }
+    
     public Connection getDBConnection() {
         return con;
     }
+    
     public boolean inviaQuery (String query)  {
         
         if (con != null) {

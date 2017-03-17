@@ -25,11 +25,11 @@ public class MainClass {
        db.inviaQuery(query);
       */ 
        //All'apertura viene caricato lo StartFrame
-       StartFrame startF = new StartFrame(new javax.swing.JFrame(), true);
-       startF.setVisible(true);
+      // StartFrame startF = new StartFrame(new javax.swing.JFrame(), true);
+      // startF.setVisible(true);
        
-       //CreaConferenzaFrame t = new CreaConferenzaFrame();
-       //t.setVisible(true);
+       Recensore_SottomettiRecensioneFrame t = new Recensore_SottomettiRecensioneFrame();
+       t.setVisible(true);
        
     }
 
