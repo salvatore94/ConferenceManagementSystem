@@ -5,12 +5,16 @@
  */
 package conferencemanagementsystem;
 
+import java.sql.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
 import conferencemanagementsystem.MainClass;
+import static conferencemanagementsystem.MainClass.db;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author salvatore
@@ -174,23 +178,54 @@ public class RegisterFrame extends javax.swing.JFrame {
     private void registratiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registratiButtonActionPerformed
         String nomeUtente = nomeUtenteField.getText().trim();
         String email = emailField.getText().trim();
-        String password = passwordField.getPassword().toString();
-        String verificaPassword = verificaPasswordField.getPassword().toString();
+        String cognome = cognomeUtenteField.getText().trim();
+        char[] passwordArray = passwordField.getPassword();
+        char[] verificaPasswordArray = verificaPasswordField.getPassword();
+       
+        String password = new String (passwordArray);
+        String verificaPassword = new String (verificaPasswordArray);
         
         if (nomeUtente.isEmpty() || email.isEmpty() || password.isEmpty() || verificaPassword.isEmpty()) {
             creaJDialog("Errore", "Riempire tutti i campi");
-        } else if (password.equals(verificaPassword)) {
+        } else if (password.equals(verificaPassword) == false) {
             creaJDialog("Errore", "Le password non coincidono");
         } else {
-            //Inserire il record nel db
-            // MainClass.db.inviaQuery("");
-            MainClass.utente.setNome(nomeUtente);
-            MainClass.utente.setEmail(email);
-            MainClass.utente.setPassword(password);
+            String sql = "SELECT * FROM utenti  WHERE email = ?";
+            try {
+                PreparedStatement stat = db.getDBConnection().prepareStatement(sql);
+                stat.setString(1, email);
+                ResultSet result = stat.executeQuery();
+                
+                if (result.next()) {
+                    // email già presente
+                    creaJDialog("Errore", "Email già presente nel sistema");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(RegisterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
-            creaJDialog("Successo", "Registrazione avvenuta");
+            
+             sql = "INSERT INTO utenti (email, nome, cognome, password) " +
+                     " values (?, ?, ?, ?)";
+            
+            PreparedStatement stat;
+            try {
+                stat = db.getDBConnection().prepareStatement(sql);
+                stat.setString(1, email);
+                stat.setString(2, nomeUtente);
+                stat.setString(3, cognome);
+                stat.setString(4, password);
+                
+                stat.execute();
+                creaJDialog("Successo", "Registrazione avvenuta");
+               
+            } catch (SQLException ex) {
+                Logger.getLogger(RegisterFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
             this.dispose();
             //Reindirizzare alla pagina di Login
+            LoginFrame log = new LoginFrame();
+            log.setVisible(true);
         }
     }//GEN-LAST:event_registratiButtonActionPerformed
     

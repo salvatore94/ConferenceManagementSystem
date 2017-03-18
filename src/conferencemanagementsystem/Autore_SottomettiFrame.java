@@ -5,16 +5,24 @@
  */
 package conferencemanagementsystem;
 
+import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.utente;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+
 /**
  *
  * @author salvatore
  */
-public class AutoreForm_SottomettiFrame extends javax.swing.JFrame {
+public class Autore_SottomettiFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form AutoreForm_Sottometti
      */
-    public AutoreForm_SottomettiFrame() {
+    public Autore_SottomettiFrame() {
         initComponents();
     }
 
@@ -72,12 +80,6 @@ public class AutoreForm_SottomettiFrame extends javax.swing.JFrame {
                 .addGap(10, 10, 10))
         );
 
-        temaField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                temaFieldActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -103,6 +105,11 @@ public class AutoreForm_SottomettiFrame extends javax.swing.JFrame {
         );
 
         sottometti.setText("Sottometti");
+        sottometti.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sottomettiActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -132,10 +139,76 @@ public class AutoreForm_SottomettiFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void temaFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_temaFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_temaFieldActionPerformed
-
+    private void sottomettiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sottomettiActionPerformed
+       String titolo = titoloField.getText().trim();
+       String tema = temaField.getText().trim();
+       String file = fileField.getText().trim();
+       
+       if (titolo.isEmpty() || tema.isEmpty() || file.isEmpty()) {
+           creaJDialog("Errore", "Completare tutti i campi di testo");
+       } else if (controllaUnivocita(titolo) == false) {
+           creaJDialog("Errore", "Articolo precedentemente inserito");
+       } else {
+           String  sql = "INSERT INTO articoli (idUtente, titolo, tema, file) " +
+                     " values (?, ?, ?, ?)";
+           
+           PreparedStatement stat;
+           try {
+               stat = db.getDBConnection().prepareStatement(sql);
+               stat.setInt(1, utente.getId());
+               stat.setString(2, titolo);
+               stat.setString(3, tema);
+               stat.setString(4, file);
+               
+               stat.executeUpdate();
+               int id = 0;
+               sql = "SELECT * FROM articoli WHERE idUtente = ? AND titolo = ?";
+               PreparedStatement stat_id;
+               stat_id = db.getDBConnection().prepareStatement(sql);
+               stat_id.setInt(1, utente.getId());
+               stat_id.setString(2, titolo);
+               ResultSet result_id = stat_id.executeQuery();
+               while (result_id.next()) {
+                   id = result_id.getInt("idArticolo");
+               }
+                  sql = "UPDATE autori SET idArticolo = ? WHERE idUtente = ?";
+                     PreparedStatement stat_autori;
+                     stat_autori = db.getDBConnection().prepareStatement(sql);
+                     stat_autori.setInt(1, id);
+                     stat_autori.setInt(2, utente.getId());
+                     stat_autori.executeUpdate();
+                     
+               creaJDialog("Successo", "Articolo Sottomesso");
+               this.dispose();
+           } catch (SQLException ex) {
+               Logger.getLogger(Autore_SottomettiFrame.class.getName()).log(Level.SEVERE, null, ex);
+           }
+       }
+    }//GEN-LAST:event_sottomettiActionPerformed
+    
+    private void creaJDialog(String title, String mess) {
+        JDialog err = new JDialog(this, title, true);
+          err.add(new JLabel(mess));
+          err.setSize(250, 150);
+          err.setVisible(true);
+    }
+    
+    private boolean controllaUnivocita(String _titolo){
+        String sql = "SELECT * FROM articoli WHERE idUtente = ? AND titolo = ?";
+        try {
+            PreparedStatement stat;
+            stat = db.getDBConnection().prepareStatement(sql);
+            stat.setInt(1, utente.getId());
+            stat.setString(2, _titolo);
+            ResultSet result = stat.executeQuery();
+            if (result.next()) {
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Autore_SottomettiFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
+    }
     /**
      * @param args the command line arguments
      */
@@ -153,21 +226,23 @@ public class AutoreForm_SottomettiFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AutoreForm_SottomettiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Autore_SottomettiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AutoreForm_SottomettiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Autore_SottomettiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AutoreForm_SottomettiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Autore_SottomettiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AutoreForm_SottomettiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Autore_SottomettiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AutoreForm_SottomettiFrame().setVisible(true);
+                new Autore_SottomettiFrame().setVisible(true);
             }
         });
     }

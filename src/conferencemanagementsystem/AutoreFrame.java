@@ -5,6 +5,14 @@
  */
 package conferencemanagementsystem;
 
+import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.utente;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author salvatore
@@ -16,6 +24,12 @@ public class AutoreFrame extends javax.swing.JFrame {
      */
     public AutoreFrame() {
         initComponents();
+        if (controllaAmmesso() == false) {
+            sottomettiRivisto.setEnabled(false);
+        }
+        if (controllaPresenzaArticoli() == false) {
+            listaArticoli.setEnabled(false);
+        }
     }
 
     /**
@@ -27,39 +41,113 @@ public class AutoreFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        sottomettiArticolo = new javax.swing.JButton();
+        listaArticoli = new javax.swing.JButton();
         sottomettiRivisto = new javax.swing.JButton();
+        sottomettiArticolo1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        sottomettiArticolo.setText("Sottometti Articolo");
+        listaArticoli.setText("Lista Articoli");
+        listaArticoli.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listaArticoliActionPerformed(evt);
+            }
+        });
 
         sottomettiRivisto.setText("Sottometti Articolo Rivisto");
+        sottomettiRivisto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sottomettiRivistoActionPerformed(evt);
+            }
+        });
+
+        sottomettiArticolo1.setText("Sottometti Articolo");
+        sottomettiArticolo1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sottomettiArticolo1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(sottomettiArticolo, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sottomettiRivisto, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10))
+                    .addComponent(listaArticoli, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sottomettiRivisto, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sottomettiArticolo1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(sottomettiArticolo, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
+                .addComponent(sottomettiArticolo1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(listaArticoli, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(sottomettiRivisto, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(10, 10, 10))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void listaArticoliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listaArticoliActionPerformed
+        Autore_ListaArticoliSottomessiiFrame lista = new Autore_ListaArticoliSottomessiiFrame();
+        lista.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        lista.setVisible(true);
+    }//GEN-LAST:event_listaArticoliActionPerformed
+
+    private void sottomettiRivistoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sottomettiRivistoActionPerformed
+        Autore_SottomettiRivistoFrame sottomettiRivistoF = new Autore_SottomettiRivistoFrame();
+        sottomettiRivistoF.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        sottomettiRivistoF.setVisible(true);
+    }//GEN-LAST:event_sottomettiRivistoActionPerformed
+
+    private void sottomettiArticolo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sottomettiArticolo1ActionPerformed
+        Autore_SottomettiFrame sottomettiF = new Autore_SottomettiFrame();
+      sottomettiF.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+      sottomettiF.setVisible(true);
+    }//GEN-LAST:event_sottomettiArticolo1ActionPerformed
+    
+    private boolean controllaAmmesso() {
+        String sql = "SELECT * FROM articoli WHERE idUtente = ? and ammesso = true";
+        PreparedStatement stat;
+        try {
+            stat = db.getDBConnection().prepareStatement(sql);
+            stat.setInt(1, utente.getId());
+            
+            ResultSet result = stat.executeQuery();
+            
+            if(result.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Autore_SottomettiRivistoFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
+    private boolean controllaPresenzaArticoli() {
+        String sql = "SELECT * FROM articoli WHERE idUtente = ?";
+        PreparedStatement stat;
+        try {
+            stat = db.getDBConnection().prepareStatement(sql);
+            stat.setInt(1, utente.getId());
+            
+            ResultSet result = stat.executeQuery();
+            
+            if(result.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Autore_SottomettiRivistoFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
     /**
      * @param args the command line arguments
      */
@@ -99,7 +187,8 @@ public class AutoreFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton sottomettiArticolo;
+    private javax.swing.JButton listaArticoli;
+    private javax.swing.JButton sottomettiArticolo1;
     private javax.swing.JButton sottomettiRivisto;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,6 +5,16 @@
  */
 package conferencemanagementsystem;
 
+import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.utente;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author salvatore
@@ -16,8 +26,71 @@ public class Chair_ListaArticoliFrame extends javax.swing.JFrame {
      */
     public Chair_ListaArticoliFrame() {
         initComponents();
+        preparaTabella();
     }
+    
+    private void preparaTabella() {
+        Object [] colonne = {"ID Articolo", "Titolo", "Tema", "Nome Autore", "File", "File Rivisto"};        
+        Object [] row = new Object[6];
+        
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(colonne);
+        
+       String sql = "SELECT * FROM articoli";
+       
+       PreparedStatement stat;
+       ArrayList<ArticoloClass> articoli = new ArrayList<ArticoloClass>();
+        try {
+            stat = db.getDBConnection().prepareStatement(sql);
+            
+            ResultSet result = stat.executeQuery();
 
+            
+            while(result.next()){
+                ArticoloClass articolo = new ArticoloClass();
+                articolo.setIdArticolo(result.getInt("idArticolo"));
+                articolo.setIdAutore(result.getInt("idUtente"));
+                articolo.setTitolo(result.getString("titolo"));
+                articolo.setTema(result.getString("tema"));
+                articolo.setFile(result.getString("file"));
+                articolo.setFile_rivisto(result.getString("file_rivisto"));
+                articolo.setAmmesso(result.getBoolean("ammesso"));
+
+                articoli.add(articolo);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Autore_SottomettiRivistoFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        for (int i=0; i < articoli.size(); i++) {
+            sql = "SELECT * FROM utenti WHERE idUtente = ?";
+            PreparedStatement stat_utente;
+            try {
+                stat_utente = db.getDBConnection().prepareStatement(sql);
+                stat_utente.setInt(1, articoli.get(i).getIdAutore());
+                ResultSet result_utente = stat_utente.executeQuery();
+                
+                while (result_utente.next()){
+                    row[3] = result_utente.getString("nome") + " " + result_utente.getString("cognome");
+                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(Chair_ListaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            row[0] = articoli.get(i).getIdArticolo();
+            row[1] = articoli.get(i).getTitolo();
+            row[2] = articoli.get(i).getTema();
+            row[4] = articoli.get(i).getFile();
+            row[5] = articoli.get(i).getFile_rivisto();
+            
+            model.addRow(row);
+         }
+        
+       table.setModel(model);
+
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,7 +102,7 @@ public class Chair_ListaArticoliFrame extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -37,22 +110,22 @@ public class Chair_ListaArticoliFrame extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Lista Articoli");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Titolo", "Tema", "Nome Autore", "FILE"
+                "ID Articolo", "Titolo", "Tema", "Nome Autore", "FILE", "File Rivisto"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -63,12 +136,14 @@ public class Chair_ListaArticoliFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
+        jScrollPane1.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setResizable(false);
+            table.getColumnModel().getColumn(1).setResizable(false);
+            table.getColumnModel().getColumn(2).setResizable(false);
+            table.getColumnModel().getColumn(3).setResizable(false);
+            table.getColumnModel().getColumn(4).setResizable(false);
+            table.getColumnModel().getColumn(5).setResizable(false);
         }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -137,6 +212,6 @@ public class Chair_ListaArticoliFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }

@@ -27,8 +27,8 @@ public class UtenteClass {
         this.setRuolo(_ruolo);
     }
     
-    private void setId (int id){
-        this.idUtente = idUtente;
+    public void setId (int _idUtente){
+        this.idUtente = _idUtente;
     }
     
     public void setNome(String _nome) {

@@ -5,17 +5,27 @@
  */
 package conferencemanagementsystem;
 
+import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
+import static conferencemanagementsystem.MainClass.conferenza;
+import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.utente;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.*;
+
 /**
  *
  * @author salvatore
  */
-public class AutoreForm_IscrizioneConferenzaFrame extends javax.swing.JFrame {
+public class Autore_IscrizioneConferenzaFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form AutoreForm
      */
-    public AutoreForm_IscrizioneConferenzaFrame() {
+    public Autore_IscrizioneConferenzaFrame() {
         initComponents();
+        preparaTabella();
     }
 
     /**
@@ -29,7 +39,7 @@ public class AutoreForm_IscrizioneConferenzaFrame extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table = new javax.swing.JTable();
         partecipa = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -38,7 +48,7 @@ public class AutoreForm_IscrizioneConferenzaFrame extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Lista delle conferenze attive");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -64,16 +74,21 @@ public class AutoreForm_IscrizioneConferenzaFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(4).setResizable(false);
+        jScrollPane1.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setResizable(false);
+            table.getColumnModel().getColumn(1).setResizable(false);
+            table.getColumnModel().getColumn(2).setResizable(false);
+            table.getColumnModel().getColumn(3).setResizable(false);
+            table.getColumnModel().getColumn(4).setResizable(false);
         }
 
         partecipa.setText("Partecipa");
+        partecipa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                partecipaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -103,6 +118,45 @@ public class AutoreForm_IscrizioneConferenzaFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void partecipaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_partecipaActionPerformed
+        
+        //query al db per aggiungere l'utente alla conferenza
+        String sql = "INSERT INTO autori (idUtente) " +
+                     " values (?)";
+       
+        try {
+            PreparedStatement stat = db.getDBConnection().prepareStatement(sql);
+            stat.setInt(1, utente.getId());
+            stat.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(Autore_IscrizioneConferenzaFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
+      
+       AutoreFrame autoreF = new AutoreFrame();
+       autoreF.setDefaultCloseOperation(EXIT_ON_CLOSE);
+       autoreF.setVisible(true);
+       this.dispose();
+    }//GEN-LAST:event_partecipaActionPerformed
+
+    private void preparaTabella() {
+        Object [] colonne = {"idChair", "nome", "tema", "inizio", "fine", "scadenzaSottomissione"};        
+        Object [] row = new Object[6];
+        
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(colonne);
+        
+        row[0] = conferenza.getIdChair();
+        row[1] = conferenza.getNome();
+        row[2] = conferenza.getTema();
+        row[3] = conferenza.getInizio();
+        row[4] = conferenza.getFine();
+        row[5] = conferenza.getScadenzaSottomissioneArticoli();
+        
+        model.addRow(row);
+        table.setModel(model);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -120,14 +174,22 @@ public class AutoreForm_IscrizioneConferenzaFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AutoreForm_IscrizioneConferenzaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Autore_IscrizioneConferenzaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AutoreForm_IscrizioneConferenzaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Autore_IscrizioneConferenzaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AutoreForm_IscrizioneConferenzaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Autore_IscrizioneConferenzaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AutoreForm_IscrizioneConferenzaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Autore_IscrizioneConferenzaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -140,7 +202,7 @@ public class AutoreForm_IscrizioneConferenzaFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AutoreForm_IscrizioneConferenzaFrame().setVisible(true);
+                new Autore_IscrizioneConferenzaFrame().setVisible(true);
             }
         });
     }
@@ -148,7 +210,7 @@ public class AutoreForm_IscrizioneConferenzaFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton partecipa;
+    private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }

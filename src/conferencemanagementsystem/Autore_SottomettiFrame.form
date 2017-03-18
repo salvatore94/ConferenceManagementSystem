@@ -140,9 +140,6 @@
         <Component class="javax.swing.JTextField" name="titoloField">
         </Component>
         <Component class="javax.swing.JTextField" name="temaField">
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="temaFieldActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="fileField">
         </Component>
@@ -152,6 +149,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Sottometti"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sottomettiActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

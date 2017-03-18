@@ -15,7 +15,17 @@ public class ArticoloClass {
     private String titolo;
     private String tema;
     private String file;
+    private String file_rivisto;
     private boolean ammesso;
+
+    public String getFile_rivisto() {
+        return file_rivisto;
+    }
+
+    public void setFile_rivisto(String file_rivisto) {
+        this.file_rivisto = file_rivisto;
+    }
+
     
     private UtenteClass autore;
 
@@ -26,9 +36,12 @@ public class ArticoloClass {
         this.tema = tema;
         this.file = file;
         
-        this.setAutore();
+       // this.setAutore();
         
     }
+    public ArticoloClass() {}
+    
+
     
     public int getIdArticolo() {
         return idArticolo;

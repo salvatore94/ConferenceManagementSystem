@@ -5,23 +5,25 @@
  */
 package conferencemanagementsystem;
 
-import java.util.Date;
+import java.time.*;
 
 /**
  *
  * @author salvatore
  */
 public class ConferenzaClass {
+    private int idChair;
     private String nome;
     private String tema;
     private int numeroArticoli;
     
-    private Date inizo;
-    private Date fine;
+    private LocalDate inizo;
+    private LocalDate fine;
 
-    private Date scadenzaSottomissioneArticoli;
-    private Date scadenzaReview;
-    private Date scadenzaSottomissioneCorretti;
+    private LocalDate scadenzaSottomissioneArticoli;
+    private LocalDate scadenzaReview;
+    private LocalDate scadenzaSottomissioneCorretti;
+    
     
     
     public void setNome(String nome) {
@@ -35,27 +37,7 @@ public class ConferenzaClass {
     public void setNumeroArticoli(int numeroArticoli) {
         this.numeroArticoli = numeroArticoli;
     }
-
-    public void setInizo(Date inizo) {
-        this.inizo = inizo;
-    }
-
-    public void setFine(Date fine) {
-        this.fine = fine;
-    }
     
-    public void setScadenzaSottomissioneArticoli(Date scadenzaSottomissioneArticoli) {
-        this.scadenzaSottomissioneArticoli = scadenzaSottomissioneArticoli;
-    }
-
-    public void setScadenzaReview(Date scadenzaReview) {
-        this.scadenzaReview = scadenzaReview;
-    }
-
-    public void setScadenzaSottomissioneCorretti(Date scadenzaSottomissioneCorretti) {
-        this.scadenzaSottomissioneCorretti = scadenzaSottomissioneCorretti;
-    }
-
     public String getNome() {
         return nome;
     }
@@ -68,24 +50,53 @@ public class ConferenzaClass {
         return numeroArticoli;
     }
 
-    public Date getInizo() {
+    public int getIdChair() {
+        return idChair;
+    }
+
+    public void setIdChair(int idChair) {
+        this.idChair = idChair;
+    }
+
+    public LocalDate getInizio() {
         return inizo;
     }
 
-    public Date getFine() {
+    public void setInizo(LocalDate inizo) {
+        this.inizo = inizo;
+    }
+
+    public LocalDate getFine() {
         return fine;
     }
-    
-    public Date getScadenzaSottomissioneArticoli() {
+
+    public void setFine(LocalDate fine) {
+        this.fine = fine;
+    }
+
+    public LocalDate getScadenzaSottomissioneArticoli() {
         return scadenzaSottomissioneArticoli;
     }
 
-    public Date getScadenzaReview() {
+    public void setScadenzaSottomissioneArticoli(LocalDate scadenzaSottomissioneArticoli) {
+        this.scadenzaSottomissioneArticoli = scadenzaSottomissioneArticoli;
+    }
+
+    public LocalDate getScadenzaReview() {
         return scadenzaReview;
     }
 
-    public Date getScadenzaSottomissioneCorretti() {
+    public void setScadenzaReview(LocalDate scadenzaReview) {
+        this.scadenzaReview = scadenzaReview;
+    }
+
+    public LocalDate getScadenzaSottomissioneCorretti() {
         return scadenzaSottomissioneCorretti;
     }
+
+    public void setScadenzaSottomissioneCorretti(LocalDate scadenzaSottomissioneCorretti) {
+        this.scadenzaSottomissioneCorretti = scadenzaSottomissioneCorretti;
+    }
+
     
 }

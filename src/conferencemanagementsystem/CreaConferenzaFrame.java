@@ -5,10 +5,17 @@
  */
 package conferencemanagementsystem;
 
-import java.util.Date;
+import java.time.*;
 import conferencemanagementsystem.MainClass;
+import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.utente;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import static java.lang.System.out;
+import java.sql.*;
+import static java.time.temporal.TemporalQueries.zone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
@@ -34,13 +41,14 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        creaConferenza = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         scadenzaSottomissioneField = new javax.swing.JFormattedTextField();
         scadenzaReviewField = new javax.swing.JFormattedTextField();
         scadenzaCorrettiField = new javax.swing.JFormattedTextField();
         dataFineField = new javax.swing.JFormattedTextField();
         dataInizioField = new javax.swing.JFormattedTextField();
+        jLabel9 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -54,28 +62,32 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         nomeConferenzaField = new javax.swing.JTextField();
         temaConferenzaField = new javax.swing.JTextField();
-        numeroArticoliField = new javax.swing.JFormattedTextField();
+        numeroArticoliField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Creazione di una Conferenza");
         setPreferredSize(new java.awt.Dimension(560, 380));
 
-        jButton1.setText("Crea");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        creaConferenza.setText("Crea");
+        creaConferenza.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                creaConferenzaActionPerformed(evt);
             }
         });
 
-        scadenzaSottomissioneField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        scadenzaSottomissioneField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
 
-        scadenzaReviewField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        scadenzaReviewField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
 
-        scadenzaCorrettiField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        scadenzaCorrettiField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
 
-        dataFineField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        dataFineField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
 
-        dataInizioField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        dataInizioField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("yyyy-MM-dd");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -91,16 +103,19 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
                             .addComponent(scadenzaReviewField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(scadenzaCorrettiField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(dataFineField, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dataInizioField, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(dataFineField, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+                            .addComponent(dataInizioField, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(dataInizioField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dataFineField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -135,12 +150,12 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
                     .addComponent(jLabel8)
                     .addComponent(jLabel5)
                     .addComponent(jLabel6))
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(12, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel8)
@@ -180,10 +195,8 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
-
-        numeroArticoliField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#"))));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -191,12 +204,11 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(199, 199, 199)
-                        .addComponent(numeroArticoliField, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(nomeConferenzaField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(temaConferenzaField, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(nomeConferenzaField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(temaConferenzaField, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(numeroArticoliField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -206,9 +218,9 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
                 .addComponent(nomeConferenzaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(temaConferenzaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(numeroArticoliField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -218,7 +230,7 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(creaConferenza, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -236,31 +248,68 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(50, 50, 50)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20)
-                .addComponent(jButton1)
+                .addComponent(creaConferenza)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void creaConferenzaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_creaConferenzaActionPerformed
         // Ottengo i dati dal Form
-        Date scadenzaSottomissione = (Date)scadenzaSottomissioneField.getValue();
-        Date scadenzaReview = (Date)scadenzaReviewField.getValue();
-        Date scadenzaCorretti = (Date)scadenzaCorrettiField.getValue();
+        //A date without a time-zone in the ISO-8601 calendar system, such as 2007-12-03
+        java.time.LocalDate inizio = LocalDateTime.ofInstant(Instant.ofEpochMilli(((java.util.Date)dataInizioField.getValue()).getTime()), ZoneId.systemDefault()).toLocalDate();
+        java.time.LocalDate fine = LocalDateTime.ofInstant(Instant.ofEpochMilli(((java.util.Date)dataFineField.getValue()).getTime()), ZoneId.systemDefault()).toLocalDate();
+        java.time.LocalDate scadenzaSottomissione = LocalDateTime.ofInstant(Instant.ofEpochMilli(((java.util.Date)scadenzaSottomissioneField.getValue()).getTime()), ZoneId.systemDefault()).toLocalDate();
+        java.time.LocalDate scadenzaReview = LocalDateTime.ofInstant(Instant.ofEpochMilli(((java.util.Date)scadenzaReviewField.getValue()).getTime()), ZoneId.systemDefault()).toLocalDate();
+        java.time.LocalDate scadenzaCorretti = LocalDateTime.ofInstant(Instant.ofEpochMilli(((java.util.Date)scadenzaCorrettiField.getValue()).getTime()), ZoneId.systemDefault()).toLocalDate();
+
+        System.out.println(inizio);
         
-        int numeroArticoliAmmessi = (int)numeroArticoliField.getValue();
+        int numeroArticoliAmmessi = Integer.parseInt(numeroArticoliField.getText());
         String nomeConferenza = nomeConferenzaField.getText().trim();
         String temaConferenza = temaConferenzaField.getText().trim();
         
+        String sql;
+        PreparedStatement stat;
+        ResultSet result = null;
         
+        sql = "INSERT INTO conferenza (idChair, nome, tema, numeroArticoli, inizio, fine, scadenzaSottomissione, scadenzaReview, scadenzaSottomissioneRivisti) " +
+                     " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+        try {
+            stat =  db.getDBConnection().prepareStatement(sql);
+            stat.setInt(1, utente.getId());
+            stat.setString(2, nomeConferenza);
+            stat.setString(3, temaConferenza);
+            stat.setInt(4, (int) numeroArticoliAmmessi);
+            stat.setObject(5, inizio);
+            stat.setObject(6, fine);
+            stat.setObject(7, scadenzaSottomissione);
+            stat.setObject(8, scadenzaReview);
+            stat.setObject(9, scadenzaCorretti);
+            
+            stat.executeUpdate();
+            
+            
+                creaJDialog("Successo", "ConferenzaCreata");
+                
+                this.dispose();
+                ChairFrame chair = new ChairFrame();
+                
+                chair.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                chair.setVisible(true);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(CreaConferenzaFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_creaConferenzaActionPerformed
      
     private void creaJDialog(String title, String mess) {
         JDialog err = new JDialog(this, title, true);
@@ -274,10 +323,12 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
           err.setSize(250, 150);
           err.setVisible(true);
     }
-    
+
     private void pulisciField() {
         nomeConferenzaField.setText("");
         temaConferenzaField.setText("");
+        dataInizioField.setText("");
+        dataFineField.setText("");
         scadenzaSottomissioneField.setText("");
         scadenzaReviewField.setText("");
         scadenzaCorrettiField.setText("");
@@ -319,9 +370,9 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton creaConferenza;
     private javax.swing.JFormattedTextField dataFineField;
     private javax.swing.JFormattedTextField dataInizioField;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -330,12 +381,13 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JTextField nomeConferenzaField;
-    private javax.swing.JFormattedTextField numeroArticoliField;
+    private javax.swing.JTextField numeroArticoliField;
     private javax.swing.JFormattedTextField scadenzaCorrettiField;
     private javax.swing.JFormattedTextField scadenzaReviewField;
     private javax.swing.JFormattedTextField scadenzaSottomissioneField;

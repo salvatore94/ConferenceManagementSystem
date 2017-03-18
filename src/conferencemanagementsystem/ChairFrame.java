@@ -45,15 +45,21 @@ public class ChairFrame extends javax.swing.JFrame {
         });
 
         autoriPaartecipanti.setText("Autori Partecipanti");
+        autoriPaartecipanti.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                autoriPaartecipantiActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(comitatoProgramma, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(autoriPaartecipanti, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(comitatoProgramma, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(autoriPaartecipanti, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -67,10 +73,25 @@ public class ChairFrame extends javax.swing.JFrame {
         );
 
         listaArticoli.setText("Lista Articoli");
+        listaArticoli.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listaArticoliActionPerformed(evt);
+            }
+        });
 
         notificaEsiti.setText("Notifica Esiti");
+        notificaEsiti.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                notificaEsitiActionPerformed(evt);
+            }
+        });
 
         listaRecensioni.setText("Lista delle Recensioni");
+        listaRecensioni.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listaRecensioniActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -128,6 +149,28 @@ public class ChairFrame extends javax.swing.JFrame {
        comitatoF.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
        comitatoF.setVisible(true);
     }//GEN-LAST:event_comitatoProgrammaActionPerformed
+
+    private void autoriPaartecipantiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoriPaartecipantiActionPerformed
+        Chair_AutoriPartecipantiFrame autori = new Chair_AutoriPartecipantiFrame();
+        autori.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        autori.setVisible(true);
+    }//GEN-LAST:event_autoriPaartecipantiActionPerformed
+
+    private void listaArticoliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listaArticoliActionPerformed
+        Chair_ListaArticoliFrame lista = new Chair_ListaArticoliFrame();
+        lista.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        lista.setVisible(true);
+    }//GEN-LAST:event_listaArticoliActionPerformed
+
+    private void listaRecensioniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listaRecensioniActionPerformed
+       Chair_ListaRecensioniFrame listaR = new Chair_ListaRecensioniFrame();
+       listaR.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+       listaR.setVisible(true);
+    }//GEN-LAST:event_listaRecensioniActionPerformed
+
+    private void notificaEsitiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notificaEsitiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_notificaEsitiActionPerformed
 
     /**
      * @param args the command line arguments

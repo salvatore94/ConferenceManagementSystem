@@ -6,6 +6,17 @@
 package conferencemanagementsystem;
 
 import conferencemanagementsystem.MainClass;
+import static conferencemanagementsystem.MainClass.conferenza;
+import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.utente;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.*;
+import java.time.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 
 /**
  *
@@ -97,13 +108,175 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         String email = emailField.getText().trim();
-        String password = passwordField.getPassword().toString();    
+        char[] passwordArray = passwordField.getPassword();
         
+        String password = new String (passwordArray);
+        
+                
+        if (email.isEmpty() || password.isEmpty()) {
+            creaJDialog("Errore", "Riempire tutti i campi");
+        } else {
         //Controllo se i dati inseriti esistono nel db
         //MainClass.db.inviaQuery("");
         
+        String sql = "SELECT * FROM utenti WHERE email = ? AND password = ?";
+            try {
+                PreparedStatement stat = db.getDBConnection().prepareStatement(sql);
+                stat.setString(1, email);
+                stat.setString(2, password);
+                
+                ResultSet result = stat.executeQuery();
+                if (result.next()) {
+                    utente.setId(result.getInt("idUtente"));
+                    utente.setNome(result.getString("nome"));
+                    utente.setCognome(result.getString("cognome"));
+                    utente.setEmail(result.getString("email"));
+                    if (esisteConferenza()) {
+                        switch (controllaIdentita(utente.getId())) {
+                            case 0:
+                                //utente non iscritto alla conferenza
+                                Autore_IscrizioneConferenzaFrame n = new Autore_IscrizioneConferenzaFrame();
+                                n.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                                n.setVisible(true);
+                                break;
+                            case 1:
+                                //chair
+                                ChairFrame chair = new ChairFrame();
+                                chair.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                                chair.setVisible(true);
+                                break;
+                            case 2:
+                                //membro del comitato
+                                RecensoreFrame recensore = new RecensoreFrame();
+                                recensore.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                                recensore.setVisible(true);
+                                break;
+                            case 3:
+                                //autore
+                                AutoreFrame autore = new AutoreFrame();
+                                autore.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                                autore.setVisible(true);
+                                break;
+                        }
+                    } else {
+                        //non esiste una conferenza
+                        CreaConferenzaFrame conferenza = new CreaConferenzaFrame();
+                        conferenza.setDefaultCloseOperation(HIDE_ON_CLOSE);
+                        conferenza.setVisible(true);
+                    }
+                  this.dispose();                
+                } else {
+                    creaJDialog("Errore", "I dati non corrispondono");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+        }
+
+        
     }//GEN-LAST:event_loginButtonActionPerformed
 
+    private void creaJDialog(String title, String mess) {
+        JDialog err = new JDialog(this, title, true);
+          err.add(new JLabel(mess));
+          err.addWindowListener(new WindowAdapter () {
+            @Override
+              public void windowClosing (WindowEvent e) {
+                pulisciField();
+            }
+            });
+          err.setSize(250, 150);
+          err.setVisible(true);
+    }
+    
+    public int controllaIdentita(int id){
+        int ruolo = 0;  //0 è un utente, 1 è il chair, 2 è un membro del comitato, 3 è un autore
+        String sql;
+        PreparedStatement stat;
+        
+        
+        sql = "SELECT * FROM conferenza WHERE idChair = ?";
+        try {
+            stat = db.getDBConnection().prepareStatement(sql);
+            stat.setInt(1, id);
+            ResultSet result = stat.executeQuery();
+            
+            if (result.next()) {
+                    //è il chair
+                   ruolo = 1;                  
+                }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        sql = "SELECT * FROM autori WHERE idUtente = ?";
+        try {
+            stat = db.getDBConnection().prepareStatement(sql);
+            stat.setInt(1, id);
+            ResultSet result = stat.executeQuery();
+            
+            if (result.next()) {
+                    //è un autore 
+                   ruolo = 3;                  
+                }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }             
+        
+        sql = "SELECT * FROM comitato WHERE idUtente = ?";
+        try {
+            stat = db.getDBConnection().prepareStatement(sql);
+            stat.setInt(1, id);
+            ResultSet result = stat.executeQuery();
+            
+            if (result.next()) {
+                    //è un membro del comitato
+                   ruolo = 2;                  
+                }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        // è un utente semplice
+        return ruolo;
+    }
+    
+    public boolean esisteConferenza() {
+        String sql = "SELECT * FROM conferenza";
+        Statement stat;
+        try {
+            stat = db.getDBConnection().createStatement();
+            ResultSet result = stat.executeQuery(sql);
+            
+            if (result.next()) {
+            conferenza.setIdChair(result.getInt("idChair"));
+            conferenza.setNome(result.getString("nome"));
+            conferenza.setTema(result.getString("tema"));
+            conferenza.setNumeroArticoli(result.getInt("numeroArticoli"));
+            conferenza.setInizo(result.getObject("inizio", LocalDate.class));
+            conferenza.setFine(result.getObject("fine", LocalDate.class));
+            conferenza.setScadenzaSottomissioneArticoli(result.getObject("scadenzaSottomissione", LocalDate.class));
+            conferenza.setScadenzaReview(result.getObject("scadenzaReview", LocalDate.class));
+            conferenza.setScadenzaSottomissioneCorretti(result.getObject("scadenzaSottomissioneRivisti", LocalDate.class));
+            
+            return true;
+        }
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return false;
+    }
+    
+    private void pulisciField() {
+        emailField.setText("");
+        passwordField.setText("");
+    }
     /**
      * @param args the command line arguments
      */
