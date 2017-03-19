@@ -6,6 +6,18 @@
 
 package conferencemanagementsystem;
 
+import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.utente;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author salvatore
@@ -15,8 +27,70 @@ public class Recensore_AccettaArticoliAssegnatiFrame extends javax.swing.JFrame 
     /** Creates new form Recensore_AccettaArticoliAssegnati */
     public Recensore_AccettaArticoliAssegnatiFrame() {
         initComponents();
+        preparaTabella();
     }
 
+    private void preparaTabella() {
+        Object [] colonne = {"ID Articolo", "Titolo", "Tema", "File"};        
+        Object [] row = new Object[4];
+        
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(colonne);
+        
+       String sql = "SELECT * FROM comitato WHERE idUtente = ?";
+       
+       PreparedStatement stat;
+       ArrayList<ArticoloClass> articoli = new ArrayList<ArticoloClass>();
+        try {
+            stat = db.getDBConnection().prepareStatement(sql);
+            stat.setInt(1, utente.getId());
+            ResultSet result = stat.executeQuery();
+
+            
+            while(result.next()){
+                ArticoloClass articolo = new ArticoloClass();
+                articolo.setIdArticolo(result.getInt("idArticolo"));
+
+                articoli.add(articolo);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Autore_SottomettiRivistoFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        for (int i=0; i < articoli.size(); i++) {
+            sql = "SELECT * FROM articoli WHERE idArticolo = ?";
+            PreparedStatement stat_articolo;
+            try {
+                stat_articolo = db.getDBConnection().prepareStatement(sql);
+                stat_articolo.setInt(1, articoli.get(i).getIdArticolo());
+                ResultSet result_articolo = stat_articolo.executeQuery();
+                
+                while (result_articolo.next()){
+                    articoli.get(i).setTitolo(result_articolo.getString("titolo"));
+                    articoli.get(i).setTema(result_articolo.getString("tema"));
+                    articoli.get(i).setFile(result_articolo.getString("file"));
+                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(Chair_ListaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if(articoli.get(i).getIdArticolo() > 0) {
+                //altrimenti spunta una riga vuota 
+                
+                row[0] = articoli.get(i).getIdArticolo();
+                row[1] = articoli.get(i).getTitolo();
+                row[2] = articoli.get(i).getTema();
+                row[3] = articoli.get(i).getFile();
+            
+                model.addRow(row);
+            }
+         }
+        
+       table.setModel(model);
+
+    }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -28,16 +102,15 @@ public class Recensore_AccettaArticoliAssegnatiFrame extends javax.swing.JFrame 
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table = new javax.swing.JTable();
         rifiuta = new javax.swing.JButton();
-        accetta = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Lista degli articoli assegnati dal Chair");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -63,26 +136,18 @@ public class Recensore_AccettaArticoliAssegnatiFrame extends javax.swing.JFrame 
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
+        jScrollPane1.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setResizable(false);
+            table.getColumnModel().getColumn(1).setResizable(false);
+            table.getColumnModel().getColumn(2).setResizable(false);
+            table.getColumnModel().getColumn(3).setResizable(false);
         }
 
         rifiuta.setText("Rifiuta Selezionato");
         rifiuta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rifiutaActionPerformed(evt);
-            }
-        });
-
-        accetta.setText("Accetta Restanti");
-        accetta.setToolTipText("");
-        accetta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                accettaActionPerformed(evt);
             }
         });
 
@@ -97,25 +162,19 @@ public class Recensore_AccettaArticoliAssegnatiFrame extends javax.swing.JFrame 
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(rifiuta, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                            .addComponent(accetta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(10, 10, 10))
+                        .addComponent(rifiuta, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(rifiuta, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(98, 98, 98)
-                        .addComponent(rifiuta, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(270, 270, 270)
-                        .addComponent(accetta, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(10, 10, 10))
         );
 
@@ -123,13 +182,39 @@ public class Recensore_AccettaArticoliAssegnatiFrame extends javax.swing.JFrame 
     }// </editor-fold>//GEN-END:initComponents
 
     private void rifiutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rifiutaActionPerformed
-        // TODO add your handling code here:
+       int row = table.getSelectedRow();
+       if (row != -1) {
+          int idarticolo = (int) table.getValueAt(row, 0);
+          String sql = "UPDATE comitato SET idArticolo = ? WHERE idUtente = ? AND idArticolo = ?";
+          PreparedStatement stat;
+          
+           try {
+               stat = db.getDBConnection().prepareStatement(sql);
+               stat.setNull(1, java.sql.Types.INTEGER);
+               stat.setInt(2, utente.getId());
+               stat.setInt(3, idarticolo);
+               
+               stat.executeUpdate();
+               
+           } catch (SQLException ex) {
+               Logger.getLogger(Recensore_AccettaArticoliAssegnatiFrame.class.getName()).log(Level.SEVERE, null, ex);
+           }
+
+          creaJDialog("Successo", "Articolo rifiutato");
+          this.dispose();
+       } else {
+          creaJDialog("Errore", "Seleziona la riga corrispondente all'articolo"); 
+       }
     }//GEN-LAST:event_rifiutaActionPerformed
-
-    private void accettaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accettaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_accettaActionPerformed
-
+    private void creaJDialog(String title, String mess) {
+        JDialog err = new JDialog(this, title, true);
+          err.add(new JLabel(mess));
+          
+          err.setSize(250, 150);
+          err.setVisible(true);
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -167,11 +252,10 @@ public class Recensore_AccettaArticoliAssegnatiFrame extends javax.swing.JFrame 
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton accetta;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton rifiuta;
+    private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 
 }

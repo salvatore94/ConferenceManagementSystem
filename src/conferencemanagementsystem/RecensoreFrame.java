@@ -34,6 +34,11 @@ public class RecensoreFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         listaArticoli.setText("Lista Articoli");
+        listaArticoli.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listaArticoliActionPerformed(evt);
+            }
+        });
 
         invitaSottorecensore.setText("Invita Sottorecensore");
         invitaSottorecensore.addActionListener(new java.awt.event.ActionListener() {
@@ -77,12 +82,23 @@ public class RecensoreFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void sottomettiRecensioneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sottomettiRecensioneActionPerformed
-        // TODO add your handling code here:
+        Recensore_SottomettiRecensioneFrame sottomettiF = new Recensore_SottomettiRecensioneFrame();
+        sottomettiF.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        sottomettiF.setVisible(true);
     }//GEN-LAST:event_sottomettiRecensioneActionPerformed
 
     private void invitaSottorecensoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_invitaSottorecensoreActionPerformed
-        // TODO add your handling code here:
+        Recensore_InvitaSottoRecensoreFrame invitaF = new Recensore_InvitaSottoRecensoreFrame();
+        invitaF.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        invitaF.setVisible(true);
     }//GEN-LAST:event_invitaSottorecensoreActionPerformed
+
+    private void listaArticoliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listaArticoliActionPerformed
+       
+        Recensore_AccettaArticoliAssegnatiFrame articoliF = new Recensore_AccettaArticoliAssegnatiFrame();
+        articoliF.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        articoliF.setVisible(true);
+    }//GEN-LAST:event_listaArticoliActionPerformed
 
     /**
      * @param args the command line arguments

@@ -5,6 +5,18 @@
  */
 package conferencemanagementsystem;
 
+import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.utente;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author salvatore
@@ -16,8 +28,70 @@ public class Recensore_InvitaSottoRecensoreFrame extends javax.swing.JFrame {
      */
     public Recensore_InvitaSottoRecensoreFrame() {
         initComponents();
+        preparaTabella();
     }
 
+    private void preparaTabella() {
+        Object [] colonne = {"ID Articolo", "Titolo", "Tema", "File"};        
+        Object [] row = new Object[4];
+        
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(colonne);
+        
+       String sql = "SELECT * FROM comitato WHERE idUtente = ?";
+       
+       PreparedStatement stat;
+       ArrayList<ArticoloClass> articoli = new ArrayList<ArticoloClass>();
+        try {
+            stat = db.getDBConnection().prepareStatement(sql);
+            stat.setInt(1, utente.getId());
+            ResultSet result = stat.executeQuery();
+
+            
+            while(result.next()){
+                ArticoloClass articolo = new ArticoloClass();
+                articolo.setIdArticolo(result.getInt("idArticolo"));
+
+                articoli.add(articolo);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Autore_SottomettiRivistoFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        for (int i=0; i < articoli.size(); i++) {
+            sql = "SELECT * FROM articoli WHERE idArticolo = ?";
+            PreparedStatement stat_articolo;
+            try {
+                stat_articolo = db.getDBConnection().prepareStatement(sql);
+                stat_articolo.setInt(1, articoli.get(i).getIdArticolo());
+                ResultSet result_articolo = stat_articolo.executeQuery();
+                
+                while (result_articolo.next()){
+                    articoli.get(i).setTitolo(result_articolo.getString("titolo"));
+                    articoli.get(i).setTema(result_articolo.getString("tema"));
+                    articoli.get(i).setFile(result_articolo.getString("file"));
+                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(Chair_ListaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if(articoli.get(i).getIdArticolo() > 0) {
+                //altrimenti spunta una riga vuota 
+                
+                row[0] = articoli.get(i).getIdArticolo();
+                row[1] = articoli.get(i).getTitolo();
+                row[2] = articoli.get(i).getTema();
+                row[3] = articoli.get(i).getFile();
+            
+                model.addRow(row);
+            }
+         }
+        
+       table.setModel(model);
+
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,34 +102,31 @@ public class Recensore_InvitaSottoRecensoreFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        idArticoloLabel = new javax.swing.JLabel();
         labl = new javax.swing.JLabel();
-        idArticoloLabel2 = new javax.swing.JLabel();
         emailTextField = new javax.swing.JTextField();
         invita = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "ID Articolo", "Titolo", "Tema"
+                "ID Articolo", "Titolo", "Tema", "FILE"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -66,25 +137,18 @@ public class Recensore_InvitaSottoRecensoreFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
+        jScrollPane1.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setResizable(false);
+            table.getColumnModel().getColumn(1).setResizable(false);
+            table.getColumnModel().getColumn(2).setResizable(false);
+            table.getColumnModel().getColumn(3).setResizable(false);
         }
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Lista Articoli");
 
-        jLabel2.setText("ID Articolo");
-
         labl.setText("Email");
-
-        emailTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                emailTextFieldActionPerformed(evt);
-            }
-        });
 
         invita.setText("Invita");
         invita.addActionListener(new java.awt.event.ActionListener() {
@@ -98,46 +162,27 @@ public class Recensore_InvitaSottoRecensoreFrame extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(idArticoloLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(labl, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(17, 17, 17)
-                        .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(92, 92, 92))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(220, 220, 220)
-                .addComponent(invita, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(220, 220, 220)
+                        .addComponent(invita, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(114, 114, 114)
-                    .addComponent(idArticoloLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(206, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(idArticoloLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labl, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(10, 10, 10)
                 .addComponent(invita, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(16, 16, 16)
-                    .addComponent(idArticoloLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(72, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -145,15 +190,12 @@ public class Recensore_InvitaSottoRecensoreFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                 .addGap(10, 10, 10))
         );
         layout.setVerticalGroup(
@@ -171,14 +213,27 @@ public class Recensore_InvitaSottoRecensoreFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void emailTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_emailTextFieldActionPerformed
-
     private void invitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_invitaActionPerformed
-        // TODO add your handling code here:
+        String email = emailTextField.getText().toString().trim();
+        int row = table.getSelectedRow();
+       if (row != -1) {
+           int idarticolo = (int) table.getValueAt(row, 0);
+           
+           //Genera Notifica per il CHAIR
+           
+           creaJDialog("Successo", "SottoRecensore invitato");
+       } else {
+           creaJDialog("Errore", "Seleziona la riga corrispondente all'articolo");
+       }
     }//GEN-LAST:event_invitaActionPerformed
 
+    private void creaJDialog(String title, String mess) {
+        JDialog err = new JDialog(this, title, true);
+          err.add(new JLabel(mess));
+          
+          err.setSize(250, 150);
+          err.setVisible(true);
+    }
     /**
      * @param args the command line arguments
      */
@@ -217,14 +272,11 @@ public class Recensore_InvitaSottoRecensoreFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField emailTextField;
-    private javax.swing.JLabel idArticoloLabel;
-    private javax.swing.JLabel idArticoloLabel2;
     private javax.swing.JButton invita;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel labl;
+    private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }

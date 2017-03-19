@@ -5,6 +5,15 @@
  */
 package conferencemanagementsystem;
 
+import static conferencemanagementsystem.MainClass.db;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author salvatore
@@ -16,8 +25,125 @@ public class Chair_ComitatoDiProgramma_AssegnaArticoliFrame extends javax.swing.
      */
     public Chair_ComitatoDiProgramma_AssegnaArticoliFrame() {
         initComponents();
+        preparaTabellaRecensori();
+        preparaTabellaArticoli();
     }
+    
+    private void preparaTabellaRecensori() {
+        Object [] colonne = {"ID Recensore", "Nome", "Cognome", "Email"};        
+        Object [] row = new Object[4];
+        
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(colonne);
+        
+        String sql = "SELECT DISTINCT idUtente FROM comitato";
+       
+       PreparedStatement stat;
+       ArrayList<UtenteClass> recensori = new ArrayList<UtenteClass>();
+        try {
+            stat = db.getDBConnection().prepareStatement(sql);
+            
+            ResultSet result = stat.executeQuery();
 
+            while(result.next()){
+                UtenteClass recensore = new UtenteClass();
+                recensore.setId(result.getInt("idUtente"));
+
+                recensori.add(recensore);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Autore_SottomettiRivistoFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        for (int i=0; i < recensori.size(); i++) {
+            sql = "SELECT * FROM utenti WHERE idUtente = ?";
+            PreparedStatement stat_utente;
+            try {
+                stat_utente = db.getDBConnection().prepareStatement(sql);
+                stat_utente.setInt(1, recensori.get(i).getId());
+                ResultSet result_utente = stat_utente.executeQuery();
+                
+                while (result_utente.next()){
+                    recensori.get(i).setNome(result_utente.getString("nome"));
+                    recensori.get(i).setCognome(result_utente.getString("cognome"));
+                    recensori.get(i).setEmail(result_utente.getString("email"));
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Chair_ListaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            row[0] = recensori.get(i).getId();
+            row[1] = recensori.get(i).getNome();
+            row[2] = recensori.get(i).getCognome();
+            row[3] = recensori.get(i).getEmail();
+            
+            model.addRow(row);
+         }
+        
+       tableRecensori.setModel(model);
+    }
+    
+        private void preparaTabellaArticoli() {
+        Object [] colonne = {"ID Articolo", "Titolo", "Tema", "Nome Autore"};        
+        Object [] row = new Object[4];
+        
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(colonne);
+        
+       String sql = "SELECT * FROM articoli";
+       
+       PreparedStatement stat;
+       ArrayList<ArticoloClass> articoli = new ArrayList<ArticoloClass>();
+        try {
+            stat = db.getDBConnection().prepareStatement(sql);
+            
+            ResultSet result = stat.executeQuery();
+
+            
+            while(result.next()){
+                ArticoloClass articolo = new ArticoloClass();
+                articolo.setIdArticolo(result.getInt("idArticolo"));
+                articolo.setIdAutore(result.getInt("idUtente"));
+                articolo.setTitolo(result.getString("titolo"));
+                articolo.setTema(result.getString("tema"));
+                articolo.setFile(result.getString("file"));
+                articolo.setFile_rivisto(result.getString("file_rivisto"));
+                articolo.setAmmesso(result.getBoolean("ammesso"));
+
+                articoli.add(articolo);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Autore_SottomettiRivistoFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        for (int i=0; i < articoli.size(); i++) {
+            sql = "SELECT * FROM utenti WHERE idUtente = ?";
+            PreparedStatement stat_utente;
+            try {
+                stat_utente = db.getDBConnection().prepareStatement(sql);
+                stat_utente.setInt(1, articoli.get(i).getIdAutore());
+                ResultSet result_utente = stat_utente.executeQuery();
+                
+                while (result_utente.next()){
+                    row[3] = result_utente.getString("nome") + " " + result_utente.getString("cognome");
+                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(Chair_ListaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            row[0] = articoli.get(i).getIdArticolo();
+            row[1] = articoli.get(i).getTitolo();
+            row[2] = articoli.get(i).getTema();
+
+            
+            model.addRow(row);
+         }
+        
+       tableArticoli.setModel(model);
+
+    }
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,9 +162,9 @@ public class Chair_ComitatoDiProgramma_AssegnaArticoliFrame extends javax.swing.
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableRecensori = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tableArticoli = new javax.swing.JTable();
         assegna = new javax.swing.JButton();
 
         jLabel3.setText("ID recensore");
@@ -103,22 +229,22 @@ public class Chair_ComitatoDiProgramma_AssegnaArticoliFrame extends javax.swing.
                 .addGap(20, 20, 20))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableRecensori.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "ID recensore", "Nome", "Cognome"
+                "ID recensore", "Nome", "Cognome", "Email"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -129,14 +255,15 @@ public class Chair_ComitatoDiProgramma_AssegnaArticoliFrame extends javax.swing.
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
+        jScrollPane1.setViewportView(tableRecensori);
+        if (tableRecensori.getColumnModel().getColumnCount() > 0) {
+            tableRecensori.getColumnModel().getColumn(0).setResizable(false);
+            tableRecensori.getColumnModel().getColumn(1).setResizable(false);
+            tableRecensori.getColumnModel().getColumn(2).setResizable(false);
+            tableRecensori.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tableArticoli.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -162,15 +289,20 @@ public class Chair_ComitatoDiProgramma_AssegnaArticoliFrame extends javax.swing.
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setResizable(false);
-            jTable2.getColumnModel().getColumn(1).setResizable(false);
-            jTable2.getColumnModel().getColumn(2).setResizable(false);
-            jTable2.getColumnModel().getColumn(3).setResizable(false);
+        jScrollPane2.setViewportView(tableArticoli);
+        if (tableArticoli.getColumnModel().getColumnCount() > 0) {
+            tableArticoli.getColumnModel().getColumn(0).setResizable(false);
+            tableArticoli.getColumnModel().getColumn(1).setResizable(false);
+            tableArticoli.getColumnModel().getColumn(2).setResizable(false);
+            tableArticoli.getColumnModel().getColumn(3).setResizable(false);
         }
 
         assegna.setText("Assegna");
+        assegna.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                assegnaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -179,17 +311,18 @@ public class Chair_ComitatoDiProgramma_AssegnaArticoliFrame extends javax.swing.
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(68, 68, 68)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(assegna, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(289, 289, 289))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(68, 68, 68)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(assegna, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(289, 289, 289))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,6 +341,98 @@ public class Chair_ComitatoDiProgramma_AssegnaArticoliFrame extends javax.swing.
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void assegnaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assegnaActionPerformed
+       int row1 = tableRecensori.getSelectedRow();
+       int row2 = tableArticoli.getSelectedRow();
+       
+       if (row1 != -1 && row2 != -1) {     
+        int idRecensore = (int) tableRecensori.getValueAt(row1, 0);
+        int idArticolo = (int) tableArticoli.getValueAt(row2, 0);
+            
+        if(haGiaArticoli(idRecensore) == false && haGiaLoStessoArticolo(idRecensore, idArticolo) == false) {
+        String sql = "INSERT INTO comitato (IdUtente, idArticolo) VALUES (?, ?)";
+        PreparedStatement stat;
+            try {
+                stat = db.getDBConnection().prepareStatement(sql);
+                stat.setInt(1, idRecensore);
+                stat.setInt(2, idArticolo);
+                
+                stat.executeUpdate();
+                creaJDialog("Successo", "Articolo Assegnato");
+            } catch (SQLException ex) {
+                Logger.getLogger(Chair_ComitatoDiProgramma_AssegnaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        
+        } else if(haGiaLoStessoArticolo(idRecensore, idArticolo) == true) {
+            creaJDialog("Errore", "Articolo già assegnato a questo Revisore");
+        }else {
+        String sql = "UPDATE comitato SET idArticolo = ? WHERE idUtente = ?";
+        PreparedStatement stat;
+         try {
+              stat = db.getDBConnection().prepareStatement(sql);
+              stat.setInt(1, idArticolo);
+              stat.setInt(2, idRecensore);
+            
+             stat.executeUpdate();
+             creaJDialog("Successo", "Articolo Assegnato");
+         } catch (SQLException ex) {
+               Logger.getLogger(Chair_ComitatoDiProgramma_AssegnaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);
+         }
+        }
+       } else {
+         creaJDialog("Errore", "Selezionare il recensore e l'articolo"); 
+       }
+
+    }//GEN-LAST:event_assegnaActionPerformed
+    private boolean haGiaArticoli(int idRecensore) {
+        boolean test = false;
+        String sql = "SELECT * FROM comitato WHERE idUtente = ?";
+        PreparedStatement stat1;
+           try {
+               stat1 = db.getDBConnection().prepareStatement(sql);
+               stat1.setInt(1, idRecensore);
+               ResultSet result1 = stat1.executeQuery();
+               while(result1.next()) {
+                   if(result1.getInt("idArticolo") > 0) {
+                       //ha già un articolo
+                       test = true;
+                   }
+               }
+           } catch (SQLException ex) {
+               Logger.getLogger(Chair_ComitatoDiProgramma_AssegnaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);
+           }
+           
+           return test;
+    }
+    
+    private boolean haGiaLoStessoArticolo(int idRecensore, int idArticolo) {
+        boolean test = false;
+        String sql = "SELECT * FROM comitato WHERE idUtente = ? AND idArticolo = ?";
+        PreparedStatement stat;
+           try {
+               stat = db.getDBConnection().prepareStatement(sql);
+               stat.setInt(1, idRecensore);
+               stat.setInt(2, idArticolo);
+               ResultSet result = stat.executeQuery();
+               while(result.next()) {
+                       //ha già un articolo
+                       test = true;
+               }
+           } catch (SQLException ex) {
+               Logger.getLogger(Chair_ComitatoDiProgramma_AssegnaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);
+           }
+           
+           return test;
+    }
+    
+    private void creaJDialog(String title, String mess) {
+        JDialog err = new JDialog(this, title, true);
+          err.add(new JLabel(mess));
+          
+          err.setSize(250, 150);
+          err.setVisible(true);
+    }
     /**
      * @param args the command line arguments
      */
@@ -255,7 +480,7 @@ public class Chair_ComitatoDiProgramma_AssegnaArticoliFrame extends javax.swing.
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tableArticoli;
+    private javax.swing.JTable tableRecensori;
     // End of variables declaration//GEN-END:variables
 }

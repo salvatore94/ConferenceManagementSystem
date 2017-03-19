@@ -5,6 +5,17 @@
  */
 package conferencemanagementsystem;
 
+import static conferencemanagementsystem.MainClass.db;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author salvatore
@@ -16,8 +27,50 @@ public class Chair_ComitatoDiProgramma_InvitaMembroFrame extends javax.swing.JFr
      */
     public Chair_ComitatoDiProgramma_InvitaMembroFrame() {
         initComponents();
+        preparaTabella();
     }
+     private void preparaTabella() {
+        Object [] colonne = { "Nome", "Cognome", "Email"};        
+        Object [] row = new Object[3];
+        
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(colonne);
+        
+       String sql = "SELECT * FROM utenti";
+       
+       PreparedStatement stat;
+       ArrayList<UtenteClass> utenti = new ArrayList<UtenteClass>();
+        try {
+            stat = db.getDBConnection().prepareStatement(sql);
+            
+            ResultSet result = stat.executeQuery();
 
+            while(result.next()){
+                UtenteClass ut = new UtenteClass();
+                ut.setId(result.getInt("idUtente"));
+                ut.setNome(result.getString("nome"));
+                ut.setCognome(result.getString("cognome"));
+                ut.setEmail(result.getString("email"));
+                
+                utenti.add(ut);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Autore_SottomettiRivistoFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        for (int i=0; i < utenti.size(); i++) {
+           
+            row[0] = utenti.get(i).getNome();
+            row[1] = utenti.get(i).getCognome();
+            row[2] = utenti.get(i).getEmail();
+            
+            model.addRow(row);
+         }
+        
+       table.setModel(model);
+
+    }   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,15 +81,12 @@ public class Chair_ComitatoDiProgramma_InvitaMembroFrame extends javax.swing.JFr
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
-        emailLabel = new javax.swing.JLabel();
+        table = new javax.swing.JTable();
         aggiungi = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -62,14 +112,12 @@ public class Chair_ComitatoDiProgramma_InvitaMembroFrame extends javax.swing.JFr
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
+        jScrollPane1.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setResizable(false);
+            table.getColumnModel().getColumn(1).setResizable(false);
+            table.getColumnModel().getColumn(2).setResizable(false);
         }
-
-        emailLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         aggiungi.setText("Aggiungi");
         aggiungi.addActionListener(new java.awt.event.ActionListener() {
@@ -77,36 +125,6 @@ public class Chair_ComitatoDiProgramma_InvitaMembroFrame extends javax.swing.JFr
                 aggiungiActionPerformed(evt);
             }
         });
-
-        jLabel2.setText("Email scelta");
-        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(284, 284, 284)
-                .addComponent(aggiungi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(emailLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(emailLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(aggiungi, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                .addContainerGap())
-        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -117,27 +135,65 @@ public class Chair_ComitatoDiProgramma_InvitaMembroFrame extends javax.swing.JFr
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(aggiungi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(aggiungi, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void aggiungiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aggiungiActionPerformed
-       
-       
-       //
+    int row = table.getSelectedRow();
+       if (row != -1) {
+           String email = (String) table.getValueAt(row, 2);
+           String sql = "SELECT * FROM utenti WHERE email = ?";
+           PreparedStatement stat;
+           try {
+               stat = db.getDBConnection().prepareStatement(sql);
+               stat.setString(1, email);
+               
+               ResultSet result = stat.executeQuery();
+               
+               while (result.next()) {
+                   int idRecensore = result.getInt("idUtente");
+                   
+                   sql = "INSERT INTO comitato (idUtente) VALUES (?)";
+                   
+                   PreparedStatement stat_del = db.getDBConnection().prepareStatement(sql);
+                   stat_del.setInt(1, idRecensore);
+                   stat_del.executeUpdate();
+               }
+           } catch (SQLException ex) {
+               Logger.getLogger(Chair_ComitatoDiProgrammaFrame.class.getName()).log(Level.SEVERE, null, ex);
+           }
+           
+           creaJDialog("Successo", "Utente inserito nel Comitato di Programma");
+           this.dispose();
+           
+           Chair_ComitatoDiProgrammaFrame comitatoF = new Chair_ComitatoDiProgrammaFrame();
+           comitatoF.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+           comitatoF.setVisible(true);
+
+       } else {
+           creaJDialog("Errore", "Seleziona la riga corrispondente all'utente");
+       }
     }//GEN-LAST:event_aggiungiActionPerformed
 
+    private void creaJDialog(String title, String mess) {
+        JDialog err = new JDialog(this, title, true);
+          err.add(new JLabel(mess));
+          
+          err.setSize(250, 150);
+          err.setVisible(true);
+    }
     /**
      * @param args the command line arguments
      */
@@ -176,10 +232,7 @@ public class Chair_ComitatoDiProgramma_InvitaMembroFrame extends javax.swing.JFr
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aggiungi;
-    private javax.swing.JLabel emailLabel;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,6 +5,18 @@
  */
 package conferencemanagementsystem;
 
+import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.utente;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author salvatore
@@ -16,8 +28,72 @@ public class Recensore_SottomettiRecensioneFrame extends javax.swing.JFrame {
      */
     public Recensore_SottomettiRecensioneFrame() {
         initComponents();
+        preparaTabella();
     }
+    
+    private void preparaTabella() {
+        Object [] colonne = {"ID Articolo", "Titolo", "Tema", "File"};        
+        Object [] row = new Object[4];
+        
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(colonne);
+        
+       String sql = "SELECT * FROM comitato WHERE idUtente = ?";
+       
+       PreparedStatement stat;
+       ArrayList<ArticoloClass> articoli = new ArrayList<ArticoloClass>();
+        try {
+            stat = db.getDBConnection().prepareStatement(sql);
+            stat.setInt(1, utente.getId());
+            ResultSet result = stat.executeQuery();
 
+            
+            while(result.next()){
+                if(result.getInt("idRecensione") == 0 ) {
+                    ArticoloClass articolo = new ArticoloClass();
+                    articolo.setIdArticolo(result.getInt("idArticolo"));
+
+                    articoli.add(articolo);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Autore_SottomettiRivistoFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        for (int i=0; i < articoli.size(); i++) {
+            sql = "SELECT * FROM articoli WHERE idArticolo = ?";
+            PreparedStatement stat_articolo;
+            try {
+                stat_articolo = db.getDBConnection().prepareStatement(sql);
+                stat_articolo.setInt(1, articoli.get(i).getIdArticolo());
+                ResultSet result_articolo = stat_articolo.executeQuery();
+                
+                while (result_articolo.next()){
+                    articoli.get(i).setTitolo(result_articolo.getString("titolo"));
+                    articoli.get(i).setTema(result_articolo.getString("tema"));
+                    articoli.get(i).setFile(result_articolo.getString("file"));
+                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(Chair_ListaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if(articoli.get(i).getIdArticolo() > 0) {
+                //altrimenti spunta una riga vuota 
+                
+                row[0] = articoli.get(i).getIdArticolo();
+                row[1] = articoli.get(i).getTitolo();
+                row[2] = articoli.get(i).getTema();
+                row[3] = articoli.get(i).getFile();
+            
+                model.addRow(row);
+            }
+         }
+        
+       table.setModel(model);
+
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,7 +106,7 @@ public class Recensore_SottomettiRecensioneFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -42,7 +118,7 @@ public class Recensore_SottomettiRecensioneFrame extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         commentoPrivatoField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        commentoField1 = new javax.swing.JTextField();
+        commentoField = new javax.swing.JTextField();
         sottometti = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
@@ -53,7 +129,7 @@ public class Recensore_SottomettiRecensioneFrame extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Lista Articoli");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -79,11 +155,11 @@ public class Recensore_SottomettiRecensioneFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
+        jScrollPane1.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setResizable(false);
+            table.getColumnModel().getColumn(1).setResizable(false);
+            table.getColumnModel().getColumn(2).setResizable(false);
         }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -169,7 +245,7 @@ public class Recensore_SottomettiRecensioneFrame extends javax.swing.JFrame {
                                         .addGap(49, 49, 49)
                                         .addComponent(criterio3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(commentoField1, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(commentoField, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
@@ -191,7 +267,7 @@ public class Recensore_SottomettiRecensioneFrame extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(commentoField1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(commentoField, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -253,16 +329,79 @@ public class Recensore_SottomettiRecensioneFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void sottomettiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sottomettiActionPerformed
-        int voto1 = criterio1.getSelectedIndex() + 1;
-        int voto2 = criterio2.getSelectedIndex() + 1;
-        int voto3 = criterio3.getSelectedIndex() + 1;
+        int row = table.getSelectedRow();
+        if (row != -1) {
+            int idarticolo = (int) table.getValueAt(row, 0);
+            int voto1 = criterio1.getSelectedIndex() + 1;
+            int voto2 = criterio2.getSelectedIndex() + 1;
+            int voto3 = criterio3.getSelectedIndex() + 1;
         
-        int voto = (voto1 + voto2 + voto3) / 2 ;
+            int voto = (voto1 + voto2 + voto3) / 2 ;
         
-        String commento = commentoPrivatoField.getText().trim();
-        String commentoPrivato = commentoPrivatoField.getText().trim();
+            String commento = commentoField.getText().trim();
+            String commentoPrivato = commentoPrivatoField.getText().trim();
+        
+            RecensioneClass recensione = new RecensioneClass();
+            recensione.setIdArticolo(idarticolo);
+            recensione.setIdRecensore(utente.getId());
+            recensione.setVotazione(voto);
+            recensione.setCommento(commento);
+            recensione.setCommentoRiservato(commentoPrivato);
+            
+           String sql = "INSERT INTO recensioni (idArticolo, idRecensore, votazione, commento, commentoRiservato) VALUES (?, ?, ?, ?, ?)";
+           PreparedStatement stat;
+            try {
+                stat = db.getDBConnection().prepareStatement(sql);
+                stat.setInt(1, recensione.getIdArticolo());
+                stat.setInt(2, recensione.getIdRecensore());
+                stat.setDouble(3, recensione.getVotazione());
+                stat.setString(4, recensione.getCommento());
+                stat.setString(5, recensione.getCommentoRiservato());
+                
+                stat.executeUpdate();
+            } catch (SQLException ex) {
+                Logger.getLogger(Recensore_SottomettiRecensioneFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            sql = "SELECT * FROM recensioni WHERE idArticolo = ? AND idRecensore = ?";
+            PreparedStatement stat1;
+            try {
+                stat1 = db.getDBConnection().prepareStatement(sql);
+                stat1.setInt(1, recensione.getIdArticolo());
+                stat1.setInt(2, recensione.getIdRecensore());
+                
+                ResultSet result = stat1.executeQuery();
+                while (result.next()) {
+                    recensione.setIdRecensione(result.getInt("idRecensione"));
+                    
+                    sql = "UPDATE comitato SET idRecensione = ? WHERE idUtente = ? AND idArticolo = ?";
+                    PreparedStatement stat2;
+                    stat2 = db.getDBConnection().prepareStatement(sql);
+                    stat2.setInt(1, recensione.getIdRecensione());
+                    stat2.setInt(2, recensione.getIdRecensore());
+                    stat2.setInt(3, recensione.getIdArticolo());
+                    
+                    stat2.executeUpdate();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Recensore_SottomettiRecensioneFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+            creaJDialog("Successo", "Recensione Sottomessa");
+          this.dispose();
+        } else {
+            creaJDialog("Errore", "Seleziona la riga corrispondente all'articolo");
+        }
     }//GEN-LAST:event_sottomettiActionPerformed
-
+    
+    private void creaJDialog(String title, String mess) {
+        JDialog err = new JDialog(this, title, true);
+          err.add(new JLabel(mess));
+          
+          err.setSize(250, 150);
+          err.setVisible(true);
+    }
     /**
      * @param args the command line arguments
      */
@@ -299,7 +438,7 @@ public class Recensore_SottomettiRecensioneFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField commentoField1;
+    private javax.swing.JTextField commentoField;
     private javax.swing.JTextField commentoPrivatoField;
     private javax.swing.JComboBox<String> criterio1;
     private javax.swing.JComboBox<String> criterio2;
@@ -317,7 +456,7 @@ public class Recensore_SottomettiRecensioneFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton sottometti;
+    private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }

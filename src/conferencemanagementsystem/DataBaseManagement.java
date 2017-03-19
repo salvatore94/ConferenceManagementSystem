@@ -81,10 +81,11 @@ public class DataBaseManagement {
         stat.executeUpdate(sql);
         
         sql = "CREATE TABLE IF NOT EXISTS comitato " +
-                   "(idUtente INTEGER not NULL, " +
-                   " idArticolo INTEGER NOT NULL, " + 
+                   "(id INTEGER not NULL AUTO_INCREMENT, " +
+                   " idUtente INTEGER not NULL, " +
+                   " idArticolo INTEGER, " + 
                    " idRecensione INTEGER, " + 
-                   " PRIMARY KEY ( idUtente ))";
+                   " PRIMARY KEY ( id ))";
         
         stat.executeUpdate(sql);
         
