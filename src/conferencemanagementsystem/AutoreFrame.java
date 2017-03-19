@@ -108,9 +108,10 @@ public class AutoreFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_sottomettiRivistoActionPerformed
 
     private void sottomettiArticolo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sottomettiArticolo1ActionPerformed
-        Autore_SottomettiFrame sottomettiF = new Autore_SottomettiFrame();
+      Autore_SottomettiFrame sottomettiF = new Autore_SottomettiFrame();
       sottomettiF.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
       sottomettiF.setVisible(true);
+      this.dispose();
     }//GEN-LAST:event_sottomettiArticolo1ActionPerformed
     
     private boolean controllaAmmesso() {

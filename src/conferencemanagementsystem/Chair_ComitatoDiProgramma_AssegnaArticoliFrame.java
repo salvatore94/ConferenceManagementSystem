@@ -349,13 +349,13 @@ public class Chair_ComitatoDiProgramma_AssegnaArticoliFrame extends javax.swing.
         int idRecensore = (int) tableRecensori.getValueAt(row1, 0);
         int idArticolo = (int) tableArticoli.getValueAt(row2, 0);
             
-        if(haGiaArticoli(idRecensore) == false && haGiaLoStessoArticolo(idRecensore, idArticolo) == false) {
-        String sql = "INSERT INTO comitato (IdUtente, idArticolo) VALUES (?, ?)";
+        if(haGiaArticoli(idRecensore) == false ) {
+        String sql = "UPDATE comitato SET idArticolo = ? WHERE idUtente = ?";
         PreparedStatement stat;
             try {
                 stat = db.getDBConnection().prepareStatement(sql);
-                stat.setInt(1, idRecensore);
-                stat.setInt(2, idArticolo);
+                stat.setInt(1, idArticolo);
+                stat.setInt(2, idRecensore);
                 
                 stat.executeUpdate();
                 creaJDialog("Successo", "Articolo Assegnato");
@@ -367,12 +367,12 @@ public class Chair_ComitatoDiProgramma_AssegnaArticoliFrame extends javax.swing.
         } else if(haGiaLoStessoArticolo(idRecensore, idArticolo) == true) {
             creaJDialog("Errore", "Articolo già assegnato a questo Revisore");
         }else {
-        String sql = "UPDATE comitato SET idArticolo = ? WHERE idUtente = ?";
+        String sql = "INSERT INTO comitato (idUtente, idArticolo) VALUES (?, ?)";
         PreparedStatement stat;
          try {
               stat = db.getDBConnection().prepareStatement(sql);
-              stat.setInt(1, idArticolo);
-              stat.setInt(2, idRecensore);
+              stat.setInt(1, idRecensore);
+              stat.setInt(2, idArticolo);
             
              stat.executeUpdate();
              creaJDialog("Successo", "Articolo Assegnato");

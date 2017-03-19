@@ -180,9 +180,14 @@ public class Autore_SottomettiFrame extends javax.swing.JFrame {
                      
                creaJDialog("Successo", "Articolo Sottomesso");
                this.dispose();
+               AutoreFrame autore = new AutoreFrame();
+               autore.setDefaultCloseOperation(EXIT_ON_CLOSE);
+               autore.setVisible(true);
            } catch (SQLException ex) {
                Logger.getLogger(Autore_SottomettiFrame.class.getName()).log(Level.SEVERE, null, ex);
            }
+           
+           
        }
     }//GEN-LAST:event_sottomettiActionPerformed
     
