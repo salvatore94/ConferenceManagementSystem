@@ -5,6 +5,7 @@
  */
 package conferencemanagementsystem;
 
+import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
 import static conferencemanagementsystem.MainClass.utente;
 import java.sql.PreparedStatement;
@@ -220,6 +221,23 @@ public class Recensore_InvitaSottoRecensoreFrame extends javax.swing.JFrame {
            int idarticolo = (int) table.getValueAt(row, 0);
            
            //Genera Notifica per il CHAIR
+           String descrizione = "Invitato Sottorecensore: " + email ;
+           NotificaClass notifica = new NotificaClass(conferenza.getId(), utente.getId(), idarticolo, descrizione);
+               
+           String sql = "INSERT INTO notifiche (idConferenza, idUtente, descrizione, data) VALUES (?, ?, ?, ?)";
+           
+           try {
+                    PreparedStatement stat = db.getDBConnection().prepareStatement(sql);
+                    stat.setInt(1, notifica.getIdConferenza());
+                    stat.setInt(2, notifica.getIdUtente());
+                    stat.setString(3, notifica.getDescrizione());
+                    stat.setObject(4, notifica.getData());
+            
+                    stat.executeUpdate();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Autore_IscrizioneConferenzaFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+           
            
            creaJDialog("Successo", "SottoRecensore invitato");
        } else {

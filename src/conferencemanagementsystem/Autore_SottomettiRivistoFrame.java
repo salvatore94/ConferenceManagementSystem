@@ -5,6 +5,7 @@
  */
 package conferencemanagementsystem;
 
+import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
 import static conferencemanagementsystem.MainClass.utente;
 import java.sql.*;
@@ -167,6 +168,23 @@ public class Autore_SottomettiRivistoFrame extends javax.swing.JFrame {
            } catch (SQLException ex) {
                Logger.getLogger(Autore_SottomettiRivistoFrame.class.getName()).log(Level.SEVERE, null, ex);
            }
+           
+           String descrizione = "Sottomessa copia rivista";
+               NotificaClass notifica = new NotificaClass(conferenza.getId(), utente.getId(), idArticoloSelezionato, descrizione);
+               
+               sql = "INSERT INTO notifiche (idConferenza, idUtente, descrizione, data) VALUES (?, ?, ?, ?)";
+               try {
+                    stat = db.getDBConnection().prepareStatement(sql);
+                    stat.setInt(1, notifica.getIdConferenza());
+                    stat.setInt(2, notifica.getIdUtente());
+                    stat.setString(3, notifica.getDescrizione());
+                    stat.setObject(4, notifica.getData());
+            
+                    stat.executeUpdate();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Autore_IscrizioneConferenzaFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+               
            creaJDialog("Successo", "Caricamento avvenuto con successo");
            this.dispose();
        } else {

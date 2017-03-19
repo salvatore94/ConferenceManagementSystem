@@ -231,6 +231,10 @@ public class Chair_ListaRecensioniFrame extends javax.swing.JFrame {
             }
         }
         
+        
+        //A questo punto si inviano le email agli autori
+        
+        
         creaJDialog("Successo", "Esiti registrati");
     }//GEN-LAST:event_inviaRisultatiActionPerformed
     

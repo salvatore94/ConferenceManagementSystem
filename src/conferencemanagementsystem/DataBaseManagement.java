@@ -55,7 +55,7 @@ public class DataBaseManagement {
         stat.executeUpdate(sql);
         
         sql = "CREATE TABLE IF NOT EXISTS conferenza " +
-                   "(id INTEGER NOT NULL AUTO_INCREMENT, " +
+                   "(idConferenza INTEGER NOT NULL AUTO_INCREMENT, " +
                    " idChair INTEGER NOT NULL, " +
                    " nome VARCHAR(255) NOT NULL, " + 
                    " tema VARCHAR(255) NOT NULL, " + 
@@ -65,7 +65,7 @@ public class DataBaseManagement {
                    " scadenzaSottomissione DATE, " +
                    " scadenzaReview DATE, " +
                    " scadenzaSottomissioneRivisti DATE, " +
-                   " PRIMARY KEY ( id ))";
+                   " PRIMARY KEY ( idConferenza ))";
         
         stat.executeUpdate(sql);
         
@@ -93,6 +93,17 @@ public class DataBaseManagement {
                    "(idUtente INTEGER not NULL, " +
                    " idArticolo INTEGER, " +
                    " PRIMARY KEY ( idUtente ))";
+        
+        stat.executeUpdate(sql);
+        
+        sql = "CREATE TABLE IF NOT EXISTS notifiche " +
+                   "(id INTEGER not NULL AUTO_INCREMENT,  " +
+                   " idConferenza INTEGER, " +
+                   " idUtente INTEGER, " +
+                   " idArticolo INTEGER, " +
+                   " descrizione VARCHAR(255), " +
+                   " data DATE, " +
+                   " PRIMARY KEY ( id ))";
         
         stat.executeUpdate(sql);
     }

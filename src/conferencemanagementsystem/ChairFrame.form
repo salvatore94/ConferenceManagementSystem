@@ -55,7 +55,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="comitatoProgramma" max="32767" attributes="0"/>
-                      <Component id="autoriPaartecipanti" pref="180" max="32767" attributes="0"/>
+                      <Component id="autoriPaartecipanti" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -105,7 +105,7 @@
                           <Component id="listaArticoli" min="-2" pref="186" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="2" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="notificaEsiti" alignment="0" max="32767" attributes="0"/>
+                      <Component id="notificheSistema" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -119,7 +119,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="listaRecensioni" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="notificaEsiti" min="-2" max="-2" attributes="0"/>
+                  <Component id="notificheSistema" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -134,12 +134,12 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="listaArticoliActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="notificaEsiti">
+        <Component class="javax.swing.JButton" name="notificheSistema">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Notifica Esiti"/>
+            <Property name="text" type="java.lang.String" value="Notifiche Sistema"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="notificaEsitiActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="notificheSistemaActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="listaRecensioni">

@@ -132,6 +132,7 @@ public class LoginFrame extends javax.swing.JFrame {
                     utente.setCognome(result.getString("cognome"));
                     utente.setEmail(result.getString("email"));
                     if (esisteConferenza()) {
+                        
                         switch (controllaIdentita(utente.getId())) {
                             case 0:
                                 //utente non iscritto alla conferenza
@@ -254,6 +255,7 @@ public class LoginFrame extends javax.swing.JFrame {
             ResultSet result = stat.executeQuery(sql);
             
             if (result.next()) {
+            conferenza.setId(result.getInt("idConferenza"));
             conferenza.setIdChair(result.getInt("idChair"));
             conferenza.setNome(result.getString("nome"));
             conferenza.setTema(result.getString("tema"));

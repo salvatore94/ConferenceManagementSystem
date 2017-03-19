@@ -6,6 +6,7 @@
 
 package conferencemanagementsystem;
 
+import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
 import static conferencemanagementsystem.MainClass.utente;
 import java.sql.PreparedStatement;
@@ -185,6 +186,7 @@ public class Recensore_AccettaArticoliAssegnatiFrame extends javax.swing.JFrame 
        int row = table.getSelectedRow();
        if (row != -1) {
           int idarticolo = (int) table.getValueAt(row, 0);
+          
           String sql = "UPDATE comitato SET idArticolo = ? WHERE idUtente = ? AND idArticolo = ?";
           PreparedStatement stat;
           
@@ -199,7 +201,27 @@ public class Recensore_AccettaArticoliAssegnatiFrame extends javax.swing.JFrame 
            } catch (SQLException ex) {
                Logger.getLogger(Recensore_AccettaArticoliAssegnatiFrame.class.getName()).log(Level.SEVERE, null, ex);
            }
-
+           
+          String descrizione = "Recensione articolo rifiutata";
+          NotificaClass notifica = new NotificaClass(conferenza.getId(), utente.getId(), idarticolo, descrizione);
+               
+          sql = "INSERT INTO notifiche (idConferenza, idUtente, descrizione, data) VALUES (?, ?, ?, ?)";
+          
+          
+          try {
+                    stat = db.getDBConnection().prepareStatement(sql);
+                    stat.setInt(1, notifica.getIdConferenza());
+                    stat.setInt(2, notifica.getIdUtente());
+                    stat.setString(3, notifica.getDescrizione());
+                    stat.setObject(4, notifica.getData());
+            
+                    stat.executeUpdate();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Autore_IscrizioneConferenzaFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+          
+          
+          
           creaJDialog("Successo", "Articolo rifiutato");
           this.dispose();
        } else {

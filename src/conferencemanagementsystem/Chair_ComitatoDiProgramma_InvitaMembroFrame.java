@@ -5,6 +5,7 @@
  */
 package conferencemanagementsystem;
 
+import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -60,12 +61,13 @@ public class Chair_ComitatoDiProgramma_InvitaMembroFrame extends javax.swing.JFr
         }
         
         for (int i=0; i < utenti.size(); i++) {
-           
-            row[0] = utenti.get(i).getNome();
-            row[1] = utenti.get(i).getCognome();
-            row[2] = utenti.get(i).getEmail();
+            if (utenti.get(i).getId() != conferenza.getIdChair()) {
+                row[0] = utenti.get(i).getNome();
+                row[1] = utenti.get(i).getCognome();
+                row[2] = utenti.get(i).getEmail();
             
-            model.addRow(row);
+                model.addRow(row);
+            }
          }
         
        table.setModel(model);

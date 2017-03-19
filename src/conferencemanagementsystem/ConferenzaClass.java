@@ -12,6 +12,7 @@ import java.time.*;
  * @author salvatore
  */
 public class ConferenzaClass {
+    private int id;
     private int idChair;
     private String nome;
     private String tema;
@@ -23,6 +24,14 @@ public class ConferenzaClass {
     private LocalDate scadenzaSottomissioneArticoli;
     private LocalDate scadenzaReview;
     private LocalDate scadenzaSottomissioneCorretti;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     
     
     

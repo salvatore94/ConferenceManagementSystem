@@ -60,7 +60,7 @@ public class Autore_IscrizioneConferenzaFrame extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false
@@ -132,7 +132,24 @@ public class Autore_IscrizioneConferenzaFrame extends javax.swing.JFrame {
             Logger.getLogger(Autore_IscrizioneConferenzaFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
       
-      
+       String descrizione = "Iscrizione come Autore";
+       NotificaClass notifica = new NotificaClass(conferenza.getId(), utente.getId(), descrizione);
+        
+       sql = "INSERT INTO notifiche (idConferenza, idUtente, descrizione, data) VALUES (?, ?, ?, ?)";
+        try {
+            PreparedStatement stat = db.getDBConnection().prepareStatement(sql);
+            stat.setInt(1, notifica.getIdConferenza());
+            stat.setInt(2, notifica.getIdUtente());
+            stat.setString(3, notifica.getDescrizione());
+            stat.setObject(4, notifica.getData());
+            
+            stat.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(Autore_IscrizioneConferenzaFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+       
+       
        AutoreFrame autoreF = new AutoreFrame();
        autoreF.setDefaultCloseOperation(EXIT_ON_CLOSE);
        autoreF.setVisible(true);

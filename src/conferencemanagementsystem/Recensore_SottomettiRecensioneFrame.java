@@ -5,6 +5,7 @@
  */
 package conferencemanagementsystem;
 
+import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
 import static conferencemanagementsystem.MainClass.utente;
 import java.sql.PreparedStatement;
@@ -348,6 +349,7 @@ public class Recensore_SottomettiRecensioneFrame extends javax.swing.JFrame {
             recensione.setCommento(commento);
             recensione.setCommentoRiservato(commentoPrivato);
             
+            if (esisteRecensione(recensione.getIdRecensore(), recensione.getIdArticolo()) == false) {
            String sql = "INSERT INTO recensioni (idArticolo, idRecensore, votazione, commento, commentoRiservato) VALUES (?, ?, ?, ?, ?)";
            PreparedStatement stat;
             try {
@@ -387,14 +389,54 @@ public class Recensore_SottomettiRecensioneFrame extends javax.swing.JFrame {
                 Logger.getLogger(Recensore_SottomettiRecensioneFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
             
+          String descrizione = "Recensione articolo sottomessa";
+          NotificaClass notifica = new NotificaClass(conferenza.getId(), utente.getId(), idarticolo, descrizione);
+               
+          sql = "INSERT INTO notifiche (idConferenza, idUtente, descrizione, data) VALUES (?, ?, ?, ?)";
+          
+          try {
+                    stat = db.getDBConnection().prepareStatement(sql);
+                    stat.setInt(1, notifica.getIdConferenza());
+                    stat.setInt(2, notifica.getIdUtente());
+                    stat.setString(3, notifica.getDescrizione());
+                    stat.setObject(4, notifica.getData());
             
-            creaJDialog("Successo", "Recensione Sottomessa");
+                    stat.executeUpdate();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Autore_IscrizioneConferenzaFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+          
+          creaJDialog("Successo", "Recensione Sottomessa");
           this.dispose();
+            } else {
+                // esiste già una recensione
+                creaJDialog("Errore", "Recensione già sottomessa");
+            }
         } else {
             creaJDialog("Errore", "Seleziona la riga corrispondente all'articolo");
         }
     }//GEN-LAST:event_sottomettiActionPerformed
     
+    private boolean esisteRecensione (int idRecensore, int idArticolo) {
+        boolean test = false;
+        String sql = "SELECT * FROM recensioni WHERE idArticolo = ? AND idRecensore = ?";
+        PreparedStatement stat;
+        try {
+            stat = db.getDBConnection().prepareStatement(sql);
+            stat.setInt(1, idArticolo);
+            stat.setInt(2, idRecensore);
+            
+            ResultSet result = stat.executeQuery();
+            if (result.next()) {
+                test = true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Recensore_SottomettiRecensioneFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        
+        return test;
+    }
     private void creaJDialog(String title, String mess) {
         JDialog err = new JDialog(this, title, true);
           err.add(new JLabel(mess));

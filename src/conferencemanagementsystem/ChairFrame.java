@@ -32,7 +32,7 @@ public class ChairFrame extends javax.swing.JFrame {
         autoriPaartecipanti = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         listaArticoli = new javax.swing.JButton();
-        notificaEsiti = new javax.swing.JButton();
+        notificheSistema = new javax.swing.JButton();
         listaRecensioni = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -59,7 +59,7 @@ public class ChairFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(comitatoProgramma, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(autoriPaartecipanti, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
+                    .addComponent(autoriPaartecipanti, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -79,10 +79,10 @@ public class ChairFrame extends javax.swing.JFrame {
             }
         });
 
-        notificaEsiti.setText("Notifica Esiti");
-        notificaEsiti.addActionListener(new java.awt.event.ActionListener() {
+        notificheSistema.setText("Notifiche Sistema");
+        notificheSistema.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                notificaEsitiActionPerformed(evt);
+                notificheSistemaActionPerformed(evt);
             }
         });
 
@@ -104,7 +104,7 @@ public class ChairFrame extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(listaArticoli, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 2, Short.MAX_VALUE))
-                    .addComponent(notificaEsiti, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(notificheSistema, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -115,7 +115,7 @@ public class ChairFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(listaRecensioni)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(notificaEsiti)
+                .addComponent(notificheSistema)
                 .addGap(43, 43, 43))
         );
 
@@ -168,9 +168,11 @@ public class ChairFrame extends javax.swing.JFrame {
        listaR.setVisible(true);
     }//GEN-LAST:event_listaRecensioniActionPerformed
 
-    private void notificaEsitiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notificaEsitiActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_notificaEsitiActionPerformed
+    private void notificheSistemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notificheSistemaActionPerformed
+        Chair_NotificheSistemaFrame notificheF = new Chair_NotificheSistemaFrame();
+        notificheF.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        notificheF.setVisible(true);
+    }//GEN-LAST:event_notificheSistemaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -214,6 +216,6 @@ public class ChairFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton listaArticoli;
     private javax.swing.JButton listaRecensioni;
-    private javax.swing.JButton notificaEsiti;
+    private javax.swing.JButton notificheSistema;
     // End of variables declaration//GEN-END:variables
 }
