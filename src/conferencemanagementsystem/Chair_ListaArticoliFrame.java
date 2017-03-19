@@ -30,8 +30,8 @@ public class Chair_ListaArticoliFrame extends javax.swing.JFrame {
     }
     
     private void preparaTabella() {
-        Object [] colonne = {"ID Articolo", "Titolo", "Tema", "Nome Autore", "File", "File Rivisto"};        
-        Object [] row = new Object[6];
+        Object [] colonne = {"ID Articolo", "Titolo", "Tema", "Nome Autore", "File", "File Rivisto", "AMMESSO"};        
+        Object [] row = new Object[7];
         
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(colonne);
@@ -84,6 +84,10 @@ public class Chair_ListaArticoliFrame extends javax.swing.JFrame {
             row[4] = articoli.get(i).getFile();
             row[5] = articoli.get(i).getFile_rivisto();
             
+            if (articoli.get(i).isAmmesso() == true) {
+                row[6] = "SI";
+            }
+            
             model.addRow(row);
          }
         
@@ -112,20 +116,20 @@ public class Chair_ListaArticoliFrame extends javax.swing.JFrame {
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID Articolo", "Titolo", "Tema", "Nome Autore", "FILE", "File Rivisto"
+                "ID Articolo", "Titolo", "Tema", "Nome Autore", "FILE", "File Rivisto", "AMMESSO"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -144,6 +148,7 @@ public class Chair_ListaArticoliFrame extends javax.swing.JFrame {
             table.getColumnModel().getColumn(3).setResizable(false);
             table.getColumnModel().getColumn(4).setResizable(false);
             table.getColumnModel().getColumn(5).setResizable(false);
+            table.getColumnModel().getColumn(6).setResizable(false);
         }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

@@ -161,7 +161,7 @@ public class LoginFrame extends javax.swing.JFrame {
                     } else {
                         //non esiste una conferenza
                         CreaConferenzaFrame conferenza = new CreaConferenzaFrame();
-                        conferenza.setDefaultCloseOperation(HIDE_ON_CLOSE);
+                        conferenza.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                         conferenza.setVisible(true);
                     }
                   this.dispose();                

@@ -5,6 +5,7 @@
  */
 package conferencemanagementsystem;
 
+import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +13,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -19,24 +22,25 @@ import javax.swing.table.DefaultTableModel;
  * @author salvatore
  */
 public class Chair_ListaRecensioniFrame extends javax.swing.JFrame {
-
+    
+    ArrayList<RecensioneClass> recensioni;
     /**
      * Creates new form Chair_ListaRecensioniFrame
      */
     public Chair_ListaRecensioniFrame() {
         initComponents();
-        preparaTabella();
+        recensioni = preparaTabella();
     }
     
     
-    private void preparaTabella() {
-        Object [] colonne = { "Recensore", "Titolo Articolo", "ID Articolo", "Votazione", "Commento", "Commento Riservato"};        
-        Object [] row = new Object[6];
+    private ArrayList<RecensioneClass>  preparaTabella() {
+        Object [] colonne = {"#", "Recensore", "Titolo Articolo", "ID Articolo", "Votazione", "Commento", "Commento Riservato"};        
+        Object [] row = new Object[7];
         
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(colonne);
         
-       String sql = "SELECT * FROM recensioni";
+       String sql = "SELECT * FROM recensioni ORDER by votazione DESC";
        
        PreparedStatement stat;
        ArrayList<RecensioneClass> recensioni = new ArrayList<RecensioneClass>();
@@ -70,7 +74,7 @@ public class Chair_ListaRecensioniFrame extends javax.swing.JFrame {
                 ResultSet result_articolo = stat_articolo.executeQuery();
                 
                 while (result_articolo.next()){
-                    row[1] = result_articolo.getString("titolo");
+                    row[2] = result_articolo.getString("titolo");
                 }
             sql = "SELECT * FROM utenti WHERE idUtente = ?";  
             PreparedStatement stat_recensore;
@@ -79,22 +83,25 @@ public class Chair_ListaRecensioniFrame extends javax.swing.JFrame {
             
             ResultSet result_recensore = stat_recensore.executeQuery();
             while(result_recensore.next()) {
-                row[0] = result_recensore.getString("nome") + " " + result_recensore.getString("cognome");
+                row[1] = result_recensore.getString("nome") + " " + result_recensore.getString("cognome");
             }
             } catch (SQLException ex) {
                 Logger.getLogger(Chair_ListaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
             
+            row[0] = i + 1;
             
-            row[2] = recensioni.get(i).getIdArticolo();
-            row[3] = recensioni.get(i).getVotazione();
-            row[4] = recensioni.get(i).getCommento();
-            row[5] = recensioni.get(i).getCommentoRiservato();
+            row[3] = recensioni.get(i).getIdArticolo();
+            row[4] = recensioni.get(i).getVotazione();
+            row[5] = recensioni.get(i).getCommento();
+            row[6] = recensioni.get(i).getCommentoRiservato();
             
             model.addRow(row);
          }
         
        table.setModel(model);
+       
+       return recensioni;
 
     }
     /**
@@ -109,6 +116,7 @@ public class Chair_ListaRecensioniFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
+        inviaRisultati = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -118,20 +126,20 @@ public class Chair_ListaRecensioniFrame extends javax.swing.JFrame {
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Recensore", "Titolo Articolo", "ID Articolo", "Votazione", "Commento", "Commento Riservato"
+                "#", "Recensore", "Titolo Articolo", "ID Articolo", "Votazione", "Commento", "Commento Riservato"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -150,7 +158,15 @@ public class Chair_ListaRecensioniFrame extends javax.swing.JFrame {
             table.getColumnModel().getColumn(3).setResizable(false);
             table.getColumnModel().getColumn(4).setResizable(false);
             table.getColumnModel().getColumn(5).setResizable(false);
+            table.getColumnModel().getColumn(6).setResizable(false);
         }
+
+        inviaRisultati.setText("Invia Risultati");
+        inviaRisultati.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inviaRisultatiActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -164,20 +180,68 @@ public class Chair_ListaRecensioniFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 770, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(inviaRisultati, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+                .addComponent(inviaRisultati, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void inviaRisultatiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inviaRisultatiActionPerformed
+        int numeroArticoliAmmessi = conferenza.getNumeroArticoli();
+        if (numeroArticoliAmmessi > recensioni.size()){
+            //tutti gli articoli recensiti sono accettati
+            for(int i=0; i<recensioni.size(); i++) {
+                String sql = "UPDATE articoli SET ammesso=true WHERE idArticolo = ?";
+                PreparedStatement stat;
+                try {
+                    stat = db.getDBConnection().prepareStatement(sql);
+                    stat.setInt(1, recensioni.get(i).getIdArticolo());
+                    
+                    stat.executeUpdate();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Chair_ListaRecensioniFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } else {
+            for(int i=0; i<numeroArticoliAmmessi; i++) {
+                String sql = "UPDATE articoli SET ammesso=true WHERE idArticolo = ?";
+                PreparedStatement stat;
+                try {
+                    stat = db.getDBConnection().prepareStatement(sql);
+                    stat.setInt(1, recensioni.get(i).getIdArticolo());
+                    
+                    stat.executeUpdate();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Chair_ListaRecensioniFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        creaJDialog("Successo", "Esiti registrati");
+    }//GEN-LAST:event_inviaRisultatiActionPerformed
+    
+    private void creaJDialog(String title, String mess) {
+        JDialog err = new JDialog(this, title, true);
+          err.add(new JLabel(mess));
+          
+          err.setSize(250, 150);
+          err.setVisible(true);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -214,6 +278,7 @@ public class Chair_ListaRecensioniFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton inviaRisultati;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable table;
