@@ -6,6 +6,7 @@
 package conferencemanagementsystem;
 
 import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.scadutaReview;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,6 +29,11 @@ public class Chair_ComitatoDiProgrammaFrame extends javax.swing.JFrame {
     public Chair_ComitatoDiProgrammaFrame() {
         initComponents();
         preparaTabella();
+        if (scadutaReview = true) {
+            invita.setEnabled(false);
+            rimuovi.setEnabled(false);
+            assegna.setEnabled(false);
+        }
     }
     
      private void preparaTabella() {

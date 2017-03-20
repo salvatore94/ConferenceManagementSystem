@@ -33,10 +33,10 @@ public class AutoreFrame extends javax.swing.JFrame {
             listaArticoli.setEnabled(false);
         }
         if (scadutaSottomissione = true) {
-            sottomettiArticolo.setVisible(false);
+            sottomettiArticolo.setEnabled(false);
         }
         if (scadutaSottomissioneRivisto = true) {
-            sottomettiRivisto.setVisible(false);
+            sottomettiRivisto.setEnabled(false);
         }
     }
 

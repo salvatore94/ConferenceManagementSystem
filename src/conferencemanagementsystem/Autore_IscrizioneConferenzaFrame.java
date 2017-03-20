@@ -31,7 +31,7 @@ public class Autore_IscrizioneConferenzaFrame extends javax.swing.JFrame {
         preparaTabella();
         
         if(scadutaIscrizione) {
-            partecipa.setVisible(false);
+            partecipa.setEnabled(false);
         }
     }
 

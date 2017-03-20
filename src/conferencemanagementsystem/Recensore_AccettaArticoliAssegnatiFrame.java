@@ -8,6 +8,7 @@ package conferencemanagementsystem;
 
 import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.scadutaReview;
 import static conferencemanagementsystem.MainClass.utente;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,6 +30,9 @@ public class Recensore_AccettaArticoliAssegnatiFrame extends javax.swing.JFrame 
     public Recensore_AccettaArticoliAssegnatiFrame() {
         initComponents();
         preparaTabella();
+        if (scadutaReview = true) {
+            rifiuta.setEnabled(false);
+        }
     }
 
     private void preparaTabella() {

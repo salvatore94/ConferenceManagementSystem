@@ -33,7 +33,8 @@ public class RecensoreFrame extends javax.swing.JFrame {
             pannelloAutore.setEnabled(false);
         }
         if (scadutaReview = true) {
-            sottomettiRecensione.setVisible(false);
+            sottomettiRecensione.setEnabled(false);
+            invitaSottorecensore.setEnabled(false);
         }
     }
     
