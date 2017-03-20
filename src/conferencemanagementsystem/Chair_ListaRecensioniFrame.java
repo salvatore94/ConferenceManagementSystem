@@ -7,7 +7,7 @@ package conferencemanagementsystem;
 
 import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
-import static conferencemanagementsystem.MainClass.scadutaReview;
+import static conferencemanagementsystem.MainClass.scadutaSottomissioneRivisto;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,7 +31,7 @@ public class Chair_ListaRecensioniFrame extends javax.swing.JFrame {
     public Chair_ListaRecensioniFrame() {
         initComponents();
         recensioni = preparaTabella();
-        if (scadutaReview = false) {
+        if (scadutaSottomissioneRivisto = false) {
             inviaRisultati.setEnabled(false);
         }
     }
