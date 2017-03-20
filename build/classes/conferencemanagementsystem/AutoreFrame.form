@@ -28,7 +28,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="listaArticoli" min="-2" pref="200" max="-2" attributes="0"/>
                   <Component id="sottomettiRivisto" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                  <Component id="sottomettiArticolo1" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                  <Component id="sottomettiArticolo" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -38,7 +38,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-              <Component id="sottomettiArticolo1" min="-2" pref="50" max="-2" attributes="0"/>
+              <Component id="sottomettiArticolo" min="-2" pref="50" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="listaArticoli" min="-2" pref="50" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -65,12 +65,12 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sottomettiRivistoActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="sottomettiArticolo1">
+    <Component class="javax.swing.JButton" name="sottomettiArticolo">
       <Properties>
         <Property name="text" type="java.lang.String" value="Sottometti Articolo"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sottomettiArticolo1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sottomettiArticoloActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

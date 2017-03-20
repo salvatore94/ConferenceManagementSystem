@@ -215,13 +215,13 @@ public class Recensore_InvitaSottoRecensoreFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void invitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_invitaActionPerformed
-        String email = emailTextField.getText().toString().trim();
+        String emailDestinatario = emailTextField.getText().toString().trim();
         int row = table.getSelectedRow();
        if (row != -1) {
            int idarticolo = (int) table.getValueAt(row, 0);
            
            //Genera Notifica per il CHAIR
-           String descrizione = "Invitato Sottorecensore: " + email ;
+           String descrizione = "Invitato Sottorecensore: " + emailDestinatario ;
            NotificaClass notifica = new NotificaClass(conferenza.getId(), utente.getId(), idarticolo, descrizione);
                
            String sql = "INSERT INTO notifiche (idConferenza, idUtente, descrizione, data) VALUES (?, ?, ?, ?)";
@@ -238,6 +238,11 @@ public class Recensore_InvitaSottoRecensoreFrame extends javax.swing.JFrame {
                     Logger.getLogger(Autore_IscrizioneConferenzaFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
            
+           //Manda email
+           String oggetto = "Invito a far parte del Comitato di Programma della conferenza: " + conferenza.getNome();
+           String  corpo = "Titolo Articolo da Recensire: ";
+           EmailClass email = new EmailClass(utente.getEmail(), emailDestinatario,  oggetto, corpo);
+           //email.inviaEmail();
            
            creaJDialog("Successo", "SottoRecensore invitato");
        } else {

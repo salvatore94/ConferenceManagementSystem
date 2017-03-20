@@ -8,10 +8,13 @@ package conferencemanagementsystem;
 import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.scadutaIscrizione;
 import static conferencemanagementsystem.MainClass.utente;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.table.*;
 
 /**
@@ -26,6 +29,10 @@ public class Autore_IscrizioneConferenzaFrame extends javax.swing.JFrame {
     public Autore_IscrizioneConferenzaFrame() {
         initComponents();
         preparaTabella();
+        
+        if(scadutaIscrizione) {
+            partecipa.setVisible(false);
+        }
     }
 
     /**
@@ -119,7 +126,10 @@ public class Autore_IscrizioneConferenzaFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void partecipaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_partecipaActionPerformed
-        
+        if (scadutaIscrizione) {
+           creaJDialog("Errore", "Conferenza iniziata");
+           
+        } else {
         //query al db per aggiungere l'utente alla conferenza
         String sql = "INSERT INTO autori (idUtente) " +
                      " values (?)";
@@ -154,8 +164,17 @@ public class Autore_IscrizioneConferenzaFrame extends javax.swing.JFrame {
        autoreF.setDefaultCloseOperation(EXIT_ON_CLOSE);
        autoreF.setVisible(true);
        this.dispose();
+        }
     }//GEN-LAST:event_partecipaActionPerformed
-
+    
+    private void creaJDialog(String title, String mess) {
+        JDialog err = new JDialog(this, title, true);
+          err.add(new JLabel(mess));
+          
+          err.setSize(250, 150);
+          err.setVisible(true);
+    }
+    
     private void preparaTabella() {
         Object [] colonne = {"idChair", "nome", "tema", "inizio", "fine", "scadenzaSottomissione"};        
         Object [] row = new Object[6];

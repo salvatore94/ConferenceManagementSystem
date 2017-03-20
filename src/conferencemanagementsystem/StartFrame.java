@@ -85,7 +85,7 @@ public class StartFrame extends javax.swing.JDialog {
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
         this.dispose();
         RegisterFrame register = new RegisterFrame();
-        register.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        register.setDefaultCloseOperation(EXIT_ON_CLOSE);
         register.setVisible(true);
     }//GEN-LAST:event_registerButtonActionPerformed
 

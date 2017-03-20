@@ -19,6 +19,10 @@ public class MainClass {
     static public UtenteClass utente = new UtenteClass();
     static public DataBaseManagement db = new DataBaseManagement();
     static public ConferenzaClass conferenza = new ConferenzaClass();
+    static boolean scadutaIscrizione = false;
+    static boolean scadutaSottomissione = false;
+    static boolean scadutaSottomissioneRivisto = false;
+    static boolean scadutaReview = false;
     
     public static void main(String[] args)  {
         

@@ -7,6 +7,7 @@ package conferencemanagementsystem;
 
 import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.scadutaSottomissione;
 import static conferencemanagementsystem.MainClass.utente;
 import java.sql.*;
 import java.util.logging.Level;
@@ -151,6 +152,13 @@ public class Autore_SottomettiFrame extends javax.swing.JFrame {
            creaJDialog("Errore", "Completare tutti i campi di testo");
        } else if (controllaUnivocita(titolo) == false) {
            creaJDialog("Errore", "Articolo precedentemente inserito");
+       } else if (scadutaSottomissione) {
+           creaJDialog("Errore", "Scaduta finestra di Sottomissione Articolo");
+           this.dispose();
+           
+           AutoreFrame autore = new AutoreFrame();
+           autore.setDefaultCloseOperation(EXIT_ON_CLOSE);
+           autore.setVisible(true);
        } else {
            articolo.setTitolo(titolo);
            articolo.setTema(tema);
@@ -191,13 +199,14 @@ public class Autore_SottomettiFrame extends javax.swing.JFrame {
                String descrizione = "Articolo Sottomesso";
                NotificaClass notifica = new NotificaClass(conferenza.getId(), utente.getId(), articolo.getIdArticolo(), descrizione);
                
-               sql = "INSERT INTO notifiche (idConferenza, idUtente, descrizione, data) VALUES (?, ?, ?, ?)";
+               sql = "INSERT INTO notifiche (idConferenza, idUtente, idArticolo, descrizione, data) VALUES (?, ?, ?, ?, ?)";
                try {
                     stat = db.getDBConnection().prepareStatement(sql);
                     stat.setInt(1, notifica.getIdConferenza());
                     stat.setInt(2, notifica.getIdUtente());
-                    stat.setString(3, notifica.getDescrizione());
-                    stat.setObject(4, notifica.getData());
+                    stat.setInt(3, notifica.getIdArticolo());
+                    stat.setString(4, notifica.getDescrizione());
+                    stat.setObject(5, notifica.getData());
             
                     stat.executeUpdate();
                 } catch (SQLException ex) {
@@ -224,7 +233,7 @@ public class Autore_SottomettiFrame extends javax.swing.JFrame {
                String descrizione = "Recensore ha sottomesso articolo";
                NotificaClass notifica = new NotificaClass(conferenza.getId(), utente.getId(), articolo.getIdArticolo(), descrizione);
                
-               sql = "INSERT INTO notifiche (idConferenza, idUtente, idArticolo, descrizione, data) VALUES (?, ?, ?, ?)";
+               sql = "INSERT INTO notifiche (idConferenza, idUtente, idArticolo, descrizione, data) VALUES (?, ?, ?, ?, ?)";
                try {
                     stat = db.getDBConnection().prepareStatement(sql);
                     stat.setInt(1, notifica.getIdConferenza());

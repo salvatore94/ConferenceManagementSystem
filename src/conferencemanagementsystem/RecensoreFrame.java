@@ -6,6 +6,7 @@
 package conferencemanagementsystem;
 
 import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.scadutaReview;
 import static conferencemanagementsystem.MainClass.utente;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,6 +31,9 @@ public class RecensoreFrame extends javax.swing.JFrame {
         } else {
             partecipa.setEnabled(true);
             pannelloAutore.setEnabled(false);
+        }
+        if (scadutaReview = true) {
+            sottomettiRecensione.setVisible(false);
         }
     }
     

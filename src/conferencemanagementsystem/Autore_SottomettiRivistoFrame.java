@@ -7,6 +7,7 @@ package conferencemanagementsystem;
 
 import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.scadutaSottomissioneRivisto;
 import static conferencemanagementsystem.MainClass.utente;
 import java.sql.*;
 import java.util.ArrayList;
@@ -154,6 +155,16 @@ public class Autore_SottomettiRivistoFrame extends javax.swing.JFrame {
 
        int row = table.getSelectedRow();
        if (row != -1) {
+         if (scadutaSottomissioneRivisto) {
+           creaJDialog("Errore", "Scaduta finestra di Sottomissione Articolo");
+           this.dispose();
+           
+           AutoreFrame autore = new AutoreFrame();
+           autore.setDefaultCloseOperation(EXIT_ON_CLOSE);
+           autore.setVisible(true);
+         
+         } else { 
+         
          int idArticoloSelezionato = (int) table.getModel().getValueAt(row, 0);
          
          String sql = "UPDATE  articoli SET file_rivisto = ? WHERE idArticolo = ?";
@@ -187,6 +198,7 @@ public class Autore_SottomettiRivistoFrame extends javax.swing.JFrame {
                
            creaJDialog("Successo", "Caricamento avvenuto con successo");
            this.dispose();
+         }
        } else {
            creaJDialog("Errore", "Seleziona la riga corrispondente all'articolo");
        }

@@ -8,6 +8,10 @@ package conferencemanagementsystem;
 import conferencemanagementsystem.MainClass;
 import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.scadutaIscrizione;
+import static conferencemanagementsystem.MainClass.scadutaReview;
+import static conferencemanagementsystem.MainClass.scadutaSottomissione;
+import static conferencemanagementsystem.MainClass.scadutaSottomissioneRivisto;
 import static conferencemanagementsystem.MainClass.utente;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -132,7 +136,16 @@ public class LoginFrame extends javax.swing.JFrame {
                     utente.setCognome(result.getString("cognome"));
                     utente.setEmail(result.getString("email"));
                     if (esisteConferenza()) {
-                        
+                        if (LocalDate.now().isAfter(conferenza.getScadenzaSottomissioneArticoli())) {
+                            scadutaSottomissione = true;
+                            scadutaIscrizione = true;
+                        }
+                        if (LocalDate.now().isAfter(conferenza.getScadenzaSottomissioneCorretti())) {
+                            scadutaSottomissioneRivisto = true;
+                        }
+                        if (LocalDate.now().isAfter(conferenza.getScadenzaReview())) {
+                            scadutaReview = true;
+                        }
                         switch (controllaIdentita(utente.getId())) {
                             case 0:
                                 //utente non iscritto alla conferenza

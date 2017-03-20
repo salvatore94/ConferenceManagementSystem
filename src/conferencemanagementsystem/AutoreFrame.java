@@ -6,6 +6,8 @@
 package conferencemanagementsystem;
 
 import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.scadutaSottomissione;
+import static conferencemanagementsystem.MainClass.scadutaSottomissioneRivisto;
 import static conferencemanagementsystem.MainClass.utente;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,6 +32,12 @@ public class AutoreFrame extends javax.swing.JFrame {
         if (controllaPresenzaArticoli() == false) {
             listaArticoli.setEnabled(false);
         }
+        if (scadutaSottomissione = true) {
+            sottomettiArticolo.setVisible(false);
+        }
+        if (scadutaSottomissioneRivisto = true) {
+            sottomettiRivisto.setVisible(false);
+        }
     }
 
     /**
@@ -43,7 +51,7 @@ public class AutoreFrame extends javax.swing.JFrame {
 
         listaArticoli = new javax.swing.JButton();
         sottomettiRivisto = new javax.swing.JButton();
-        sottomettiArticolo1 = new javax.swing.JButton();
+        sottomettiArticolo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,10 +69,10 @@ public class AutoreFrame extends javax.swing.JFrame {
             }
         });
 
-        sottomettiArticolo1.setText("Sottometti Articolo");
-        sottomettiArticolo1.addActionListener(new java.awt.event.ActionListener() {
+        sottomettiArticolo.setText("Sottometti Articolo");
+        sottomettiArticolo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sottomettiArticolo1ActionPerformed(evt);
+                sottomettiArticoloActionPerformed(evt);
             }
         });
 
@@ -77,14 +85,14 @@ public class AutoreFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(listaArticoli, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(sottomettiRivisto, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sottomettiArticolo1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(sottomettiArticolo, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(sottomettiArticolo1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(sottomettiArticolo, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(listaArticoli, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -107,12 +115,12 @@ public class AutoreFrame extends javax.swing.JFrame {
         sottomettiRivistoF.setVisible(true);
     }//GEN-LAST:event_sottomettiRivistoActionPerformed
 
-    private void sottomettiArticolo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sottomettiArticolo1ActionPerformed
+    private void sottomettiArticoloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sottomettiArticoloActionPerformed
       Autore_SottomettiFrame sottomettiF = new Autore_SottomettiFrame();
       sottomettiF.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
       sottomettiF.setVisible(true);
       this.dispose();
-    }//GEN-LAST:event_sottomettiArticolo1ActionPerformed
+    }//GEN-LAST:event_sottomettiArticoloActionPerformed
     
     private boolean controllaAmmesso() {
         String sql = "SELECT * FROM articoli WHERE idUtente = ? and ammesso = true";
@@ -189,7 +197,7 @@ public class AutoreFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton listaArticoli;
-    private javax.swing.JButton sottomettiArticolo1;
+    private javax.swing.JButton sottomettiArticolo;
     private javax.swing.JButton sottomettiRivisto;
     // End of variables declaration//GEN-END:variables
 }

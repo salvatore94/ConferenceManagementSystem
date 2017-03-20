@@ -7,6 +7,7 @@ package conferencemanagementsystem;
 
 import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.scadutaReview;
 import static conferencemanagementsystem.MainClass.utente;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -332,6 +333,16 @@ public class Recensore_SottomettiRecensioneFrame extends javax.swing.JFrame {
     private void sottomettiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sottomettiActionPerformed
         int row = table.getSelectedRow();
         if (row != -1) {
+          if (scadutaReview) {
+            creaJDialog("Errore", "Scaduta finestra di Sottomissione Recensione");
+            this.dispose();
+           
+            RecensoreFrame recensore = new RecensoreFrame();
+            recensore.setDefaultCloseOperation(EXIT_ON_CLOSE);
+            recensore.setVisible(true);
+            
+            } else {
+              
             int idarticolo = (int) table.getValueAt(row, 0);
             int voto1 = criterio1.getSelectedIndex() + 1;
             int voto2 = criterio2.getSelectedIndex() + 1;
@@ -392,14 +403,15 @@ public class Recensore_SottomettiRecensioneFrame extends javax.swing.JFrame {
           String descrizione = "Recensione articolo sottomessa";
           NotificaClass notifica = new NotificaClass(conferenza.getId(), utente.getId(), idarticolo, descrizione);
                
-          sql = "INSERT INTO notifiche (idConferenza, idUtente, descrizione, data) VALUES (?, ?, ?, ?)";
+          sql = "INSERT INTO notifiche (idConferenza, idUtente, idArticolo, descrizione, data) VALUES (?, ?, ?, ?, ?)";
           
           try {
                     stat = db.getDBConnection().prepareStatement(sql);
                     stat.setInt(1, notifica.getIdConferenza());
                     stat.setInt(2, notifica.getIdUtente());
-                    stat.setString(3, notifica.getDescrizione());
-                    stat.setObject(4, notifica.getData());
+                    stat.setInt(3, recensione.getIdArticolo());
+                    stat.setString(4, notifica.getDescrizione());
+                    stat.setObject(5, notifica.getData());
             
                     stat.executeUpdate();
                 } catch (SQLException ex) {
@@ -412,6 +424,7 @@ public class Recensore_SottomettiRecensioneFrame extends javax.swing.JFrame {
                 // esiste già una recensione
                 creaJDialog("Errore", "Recensione già sottomessa");
             }
+          }
         } else {
             creaJDialog("Errore", "Seleziona la riga corrispondente all'articolo");
         }
