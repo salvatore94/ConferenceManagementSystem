@@ -177,7 +177,11 @@ public class Autore_SottomettiFrame extends javax.swing.JFrame {
                while (result_id.next()) {
                    articolo.setIdArticolo(result_id.getInt("idArticolo")); 
                }
-                  sql = "UPDATE autori SET idArticolo = ? WHERE idUtente = ?";
+                 
+               
+               if (isRecensore() == false) {
+                   
+               sql = "UPDATE autori SET idArticolo = ? WHERE idUtente = ?";
                      PreparedStatement stat_autori;
                      stat_autori = db.getDBConnection().prepareStatement(sql);
                      stat_autori.setInt(1, articolo.getIdArticolo());
@@ -207,6 +211,41 @@ public class Autore_SottomettiFrame extends javax.swing.JFrame {
                AutoreFrame autore = new AutoreFrame();
                autore.setDefaultCloseOperation(EXIT_ON_CLOSE);
                autore.setVisible(true);
+               
+               } else {
+               
+                sql = "INSERT INTO autori (idUtente, idArticolo) VALUES (?, ?)";
+                     PreparedStatement stat_autori;
+                     stat_autori = db.getDBConnection().prepareStatement(sql);
+                     stat_autori.setInt(1, utente.getId());
+                     stat_autori.setInt(2, articolo.getIdArticolo());
+                     stat_autori.executeUpdate();
+                     
+               String descrizione = "Recensore ha sottomesso articolo";
+               NotificaClass notifica = new NotificaClass(conferenza.getId(), utente.getId(), articolo.getIdArticolo(), descrizione);
+               
+               sql = "INSERT INTO notifiche (idConferenza, idUtente, idArticolo, descrizione, data) VALUES (?, ?, ?, ?)";
+               try {
+                    stat = db.getDBConnection().prepareStatement(sql);
+                    stat.setInt(1, notifica.getIdConferenza());
+                    stat.setInt(2, notifica.getIdUtente());
+                    stat.setInt(3, articolo.getIdArticolo());
+                    stat.setString(4, notifica.getDescrizione());
+                    stat.setObject(5, notifica.getData());
+            
+                    stat.executeUpdate();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Autore_IscrizioneConferenzaFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+               
+               
+               creaJDialog("Successo", "Articolo Sottomesso");
+               this.dispose();
+               RecensoreFrame recensore = new RecensoreFrame();
+               recensore.setDefaultCloseOperation(EXIT_ON_CLOSE);
+               recensore.setVisible(true);
+               
+              }
            } catch (SQLException ex) {
                Logger.getLogger(Autore_SottomettiFrame.class.getName()).log(Level.SEVERE, null, ex);
            }
@@ -220,6 +259,27 @@ public class Autore_SottomettiFrame extends javax.swing.JFrame {
           err.add(new JLabel(mess));
           err.setSize(250, 150);
           err.setVisible(true);
+    }
+    
+    private boolean isRecensore() {
+        boolean test = false;
+        
+        String sql = "SELECT * FROM comitato WHERE idUtente = ?";
+        PreparedStatement stat;
+        try {
+            stat = db.getDBConnection().prepareStatement(sql);
+            stat.setInt(1, utente.getId());
+            
+            ResultSet result = stat.executeQuery();
+            if(result.next()) {
+                test = true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Autore_SottomettiFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        return test;
     }
     
     private boolean controllaUnivocita(String _titolo){

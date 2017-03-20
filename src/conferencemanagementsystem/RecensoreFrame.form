@@ -24,11 +24,16 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="listaArticoli" min="-2" pref="170" max="-2" attributes="0"/>
+                  <Component id="listaArticoli" alignment="0" min="-2" pref="170" max="-2" attributes="0"/>
                   <Component id="invitaSottorecensore" alignment="0" min="-2" pref="170" max="-2" attributes="0"/>
                   <Component id="sottomettiRecensione" alignment="0" min="-2" pref="170" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="partecipa" min="-2" pref="170" max="-2" attributes="0"/>
+                  <Component id="pannelloAutore" min="-2" pref="170" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
           </Group>
@@ -38,9 +43,15 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-              <Component id="listaArticoli" min="-2" pref="50" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="listaArticoli" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                  <Component id="partecipa" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="sottomettiRecensione" min="-2" pref="50" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="sottomettiRecensione" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                  <Component id="pannelloAutore" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="invitaSottorecensore" min="-2" pref="50" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
@@ -71,6 +82,22 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sottomettiRecensioneActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JToggleButton" name="partecipa">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Partecipa come Autore"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="partecipaActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JToggleButton" name="pannelloAutore">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Pannello Autore"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pannelloAutoreActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

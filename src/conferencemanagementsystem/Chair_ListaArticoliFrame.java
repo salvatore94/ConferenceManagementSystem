@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -107,6 +109,8 @@ public class Chair_ListaArticoliFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
+        scarica = new javax.swing.JButton();
+        elimina = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -151,18 +155,32 @@ public class Chair_ListaArticoliFrame extends javax.swing.JFrame {
             table.getColumnModel().getColumn(6).setResizable(false);
         }
 
+        scarica.setText("Scarica Selezionato");
+
+        elimina.setText("Elimina Selezionato");
+        elimina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
+                        .addComponent(scarica, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(118, 118, 118)
+                        .addComponent(elimina, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 592, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1)))
                 .addGap(10, 10, 10))
         );
         layout.setVerticalGroup(
@@ -172,12 +190,57 @@ public class Chair_ListaArticoliFrame extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(scarica, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(elimina, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void eliminaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminaActionPerformed
+        int row1 = table.getSelectedRow();
+        
+        if (row1 != -1) {
+            int idarticolo = (int) table.getValueAt(row1, 0);
+            
+            String sql = "DELETE FROM articoli WHERE idArticolo = ?";
+            try {
+                PreparedStatement stat = db.getDBConnection().prepareStatement(sql);
+                stat.setInt(1, idarticolo);
+                
+                stat.executeUpdate();
+            } catch (SQLException ex) {
+                Logger.getLogger(Chair_ListaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            sql = "UPDATE autori SET idArticolo = ? WHERE idArticolo = ?";
+            try {
+                PreparedStatement stat = db.getDBConnection().prepareStatement(sql);
+                stat.setNull(1, java.sql.Types.INTEGER);
+                stat.setInt(2, idarticolo);
+                
+                stat.executeUpdate();
+            } catch (SQLException ex) {
+                Logger.getLogger(Chair_ListaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            creaJDialog("Successo", "Articolo rimosso");
+            this.dispose();
+        } else {
+            creaJDialog("Errore", "Selezionare l'articolo da rimuovere");
+        }
+    }//GEN-LAST:event_eliminaActionPerformed
+    
+    private void creaJDialog(String title, String mess) {
+        JDialog err = new JDialog(this, title, true);
+          err.add(new JLabel(mess));
+          
+          err.setSize(250, 150);
+          err.setVisible(true);
+    }
     /**
      * @param args the command line arguments
      */
@@ -215,8 +278,10 @@ public class Chair_ListaArticoliFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton elimina;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton scarica;
     private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }

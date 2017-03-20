@@ -345,44 +345,46 @@ public class Chair_ComitatoDiProgramma_AssegnaArticoliFrame extends javax.swing.
        int row1 = tableRecensori.getSelectedRow();
        int row2 = tableArticoli.getSelectedRow();
        
-       if (row1 != -1 && row2 != -1) {     
+    if (row1 != -1 && row2 != -1) {     
         int idRecensore = (int) tableRecensori.getValueAt(row1, 0);
         int idArticolo = (int) tableArticoli.getValueAt(row2, 0);
-            
-        if(haGiaArticoli(idRecensore) == false ) {
-        String sql = "UPDATE comitato SET idArticolo = ? WHERE idUtente = ?";
-        PreparedStatement stat;
-            try {
-                stat = db.getDBConnection().prepareStatement(sql);
-                stat.setInt(1, idArticolo);
-                stat.setInt(2, idRecensore);
+        
+        if (recensoreAutore(idRecensore, idArticolo) == true) {
+            creaJDialog("Errore", "Articolo scritto dallo stesso recensore");
+        }
+        else if(haGiaArticoli(idRecensore) == false ) {
+                String sql = "UPDATE comitato SET idArticolo = ? WHERE idUtente = ?";
+                PreparedStatement stat;
+                try {
+                    stat = db.getDBConnection().prepareStatement(sql);
+                    stat.setInt(1, idArticolo);
+                    stat.setInt(2, idRecensore);
                 
-                stat.executeUpdate();
-                creaJDialog("Successo", "Articolo Assegnato");
-            } catch (SQLException ex) {
-                Logger.getLogger(Chair_ComitatoDiProgramma_AssegnaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    stat.executeUpdate();
+                    creaJDialog("Successo", "Articolo Assegnato");
+                } catch (SQLException ex) {
+                    Logger.getLogger(Chair_ComitatoDiProgramma_AssegnaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+        
+        
+            } else  {
+                String sql = "INSERT INTO comitato (idUtente, idArticolo) VALUES (?, ?)";
+                PreparedStatement stat;
+                try {
+                   stat = db.getDBConnection().prepareStatement(sql);
+                   stat.setInt(1, idRecensore);
+                   stat.setInt(2, idArticolo);
+            
+                   stat.executeUpdate();
+                   creaJDialog("Successo", "Articolo Assegnato");
+                } catch (SQLException ex) {
+                     Logger.getLogger(Chair_ComitatoDiProgramma_AssegnaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         
-        
-        } else if(haGiaLoStessoArticolo(idRecensore, idArticolo) == true) {
-            creaJDialog("Errore", "Articolo già assegnato a questo Revisore");
-        }else {
-        String sql = "INSERT INTO comitato (idUtente, idArticolo) VALUES (?, ?)";
-        PreparedStatement stat;
-         try {
-              stat = db.getDBConnection().prepareStatement(sql);
-              stat.setInt(1, idRecensore);
-              stat.setInt(2, idArticolo);
-            
-             stat.executeUpdate();
-             creaJDialog("Successo", "Articolo Assegnato");
-         } catch (SQLException ex) {
-               Logger.getLogger(Chair_ComitatoDiProgramma_AssegnaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);
-         }
-        }
-       } else {
+    } else {
          creaJDialog("Errore", "Selezionare il recensore e l'articolo"); 
-       }
+    }
 
     }//GEN-LAST:event_assegnaActionPerformed
     private boolean haGiaArticoli(int idRecensore) {
@@ -424,6 +426,28 @@ public class Chair_ComitatoDiProgramma_AssegnaArticoliFrame extends javax.swing.
            }
            
            return test;
+    }
+    
+    private boolean recensoreAutore(int idRecensore, int idArticolo) {
+        boolean test = false;
+        
+        String sql = "SELECT * FROM autori WHERE idArticolo = ?";
+        PreparedStatement stat;
+        try {
+            stat = db.getDBConnection().prepareCall(sql);
+            stat.setInt(1, idArticolo);
+            
+            ResultSet result = stat.executeQuery();
+            while (result.next()) {
+                if(result.getInt("idUtente") == idRecensore) {
+                    test = true;
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Chair_ComitatoDiProgramma_AssegnaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return test;
     }
     
     private void creaJDialog(String title, String mess) {

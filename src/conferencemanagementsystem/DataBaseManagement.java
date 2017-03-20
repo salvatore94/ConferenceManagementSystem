@@ -90,9 +90,10 @@ public class DataBaseManagement {
         stat.executeUpdate(sql);
         
         sql = "CREATE TABLE IF NOT EXISTS autori " +
-                   "(idUtente INTEGER not NULL, " +
+                   "(id INTEGER not NULL AUTO_INCREMENT, " +
+                   " idUtente INTEGER, " +
                    " idArticolo INTEGER, " +
-                   " PRIMARY KEY ( idUtente ))";
+                   " PRIMARY KEY ( id ))";
         
         stat.executeUpdate(sql);
         

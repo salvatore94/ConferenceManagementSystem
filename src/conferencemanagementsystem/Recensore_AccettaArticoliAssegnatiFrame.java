@@ -105,6 +105,7 @@ public class Recensore_AccettaArticoliAssegnatiFrame extends javax.swing.JFrame 
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
         rifiuta = new javax.swing.JButton();
+        scarica = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -152,6 +153,13 @@ public class Recensore_AccettaArticoliAssegnatiFrame extends javax.swing.JFrame 
             }
         });
 
+        scarica.setText("Scarica Selezionato");
+        scarica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                scaricaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -163,7 +171,9 @@ public class Recensore_AccettaArticoliAssegnatiFrame extends javax.swing.JFrame 
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(rifiuta, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(rifiuta, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                            .addComponent(scarica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -171,7 +181,10 @@ public class Recensore_AccettaArticoliAssegnatiFrame extends javax.swing.JFrame 
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(rifiuta, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(scarica, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(rifiuta, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -228,6 +241,10 @@ public class Recensore_AccettaArticoliAssegnatiFrame extends javax.swing.JFrame 
           creaJDialog("Errore", "Seleziona la riga corrispondente all'articolo"); 
        }
     }//GEN-LAST:event_rifiutaActionPerformed
+
+    private void scaricaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scaricaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_scaricaActionPerformed
     private void creaJDialog(String title, String mess) {
         JDialog err = new JDialog(this, title, true);
           err.add(new JLabel(mess));
@@ -277,6 +294,7 @@ public class Recensore_AccettaArticoliAssegnatiFrame extends javax.swing.JFrame 
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton rifiuta;
+    private javax.swing.JButton scarica;
     private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 

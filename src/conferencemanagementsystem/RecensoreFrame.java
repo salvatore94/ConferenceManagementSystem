@@ -5,6 +5,14 @@
  */
 package conferencemanagementsystem;
 
+import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.utente;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author salvatore
@@ -16,8 +24,36 @@ public class RecensoreFrame extends javax.swing.JFrame {
      */
     public RecensoreFrame() {
         initComponents();
+        if (isAutore() == true) {
+            partecipa.setEnabled(false);
+            pannelloAutore.setEnabled(true);
+        } else {
+            partecipa.setEnabled(true);
+            pannelloAutore.setEnabled(false);
+        }
     }
-
+    
+    
+    private boolean isAutore() {
+        boolean test = false;
+        
+        String sql = "SELECT * FROM autori WHERE idUtente = ?";
+        PreparedStatement stat;
+        try {
+            stat = db.getDBConnection().prepareStatement(sql);
+            stat.setInt(1, utente.getId());
+            
+            ResultSet result = stat.executeQuery();
+            if(result.next()) {
+                test = true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Autore_SottomettiFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        return test;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,6 +66,8 @@ public class RecensoreFrame extends javax.swing.JFrame {
         listaArticoli = new javax.swing.JToggleButton();
         invitaSottorecensore = new javax.swing.JToggleButton();
         sottomettiRecensione = new javax.swing.JToggleButton();
+        partecipa = new javax.swing.JToggleButton();
+        pannelloAutore = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -54,6 +92,20 @@ public class RecensoreFrame extends javax.swing.JFrame {
             }
         });
 
+        partecipa.setText("Partecipa come Autore");
+        partecipa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                partecipaActionPerformed(evt);
+            }
+        });
+
+        pannelloAutore.setText("Pannello Autore");
+        pannelloAutore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pannelloAutoreActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -64,15 +116,23 @@ public class RecensoreFrame extends javax.swing.JFrame {
                     .addComponent(listaArticoli, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(invitaSottorecensore, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(sottomettiRecensione, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(partecipa, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pannelloAutore, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(listaArticoli, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(listaArticoli, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(partecipa, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(sottomettiRecensione, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(sottomettiRecensione, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pannelloAutore, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(invitaSottorecensore, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10))
@@ -99,6 +159,19 @@ public class RecensoreFrame extends javax.swing.JFrame {
         articoliF.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         articoliF.setVisible(true);
     }//GEN-LAST:event_listaArticoliActionPerformed
+
+    private void partecipaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_partecipaActionPerformed
+      Autore_SottomettiFrame sottomettiF = new Autore_SottomettiFrame();
+      sottomettiF.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+      sottomettiF.setVisible(true);
+      this.dispose();
+    }//GEN-LAST:event_partecipaActionPerformed
+
+    private void pannelloAutoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pannelloAutoreActionPerformed
+        AutoreFrame autore = new AutoreFrame();
+        autore.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        autore.setVisible(true);
+    }//GEN-LAST:event_pannelloAutoreActionPerformed
 
     /**
      * @param args the command line arguments
@@ -138,6 +211,8 @@ public class RecensoreFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton invitaSottorecensore;
     private javax.swing.JToggleButton listaArticoli;
+    private javax.swing.JToggleButton pannelloAutore;
+    private javax.swing.JToggleButton partecipa;
     private javax.swing.JToggleButton sottomettiRecensione;
     // End of variables declaration//GEN-END:variables
 }
