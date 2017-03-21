@@ -10,6 +10,7 @@ import static conferencemanagementsystem.MainClass.db;
 import static conferencemanagementsystem.MainClass.scadutaSottomissioneRivisto;
 import static conferencemanagementsystem.MainClass.utente;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -155,7 +156,7 @@ public class Autore_SottomettiRivistoFrame extends javax.swing.JFrame {
 
        int row = table.getSelectedRow();
        if (row != -1) {
-         if (scadutaSottomissioneRivisto) {
+         if (LocalDate.now().isAfter(conferenza.getScadenzaSottomissioneCorretti())) {
            creaJDialog("Errore", "Scaduta finestra di Sottomissione Articolo");
            this.dispose();
            

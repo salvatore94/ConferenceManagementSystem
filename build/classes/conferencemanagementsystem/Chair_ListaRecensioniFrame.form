@@ -35,7 +35,7 @@
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="inviaRisultati" min="-2" pref="180" max="-2" attributes="0"/>
+              <Component id="graduatoria" min="-2" pref="180" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -48,7 +48,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane1" pref="525" max="32767" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="inviaRisultati" min="-2" pref="44" max="-2" attributes="0"/>
+              <Component id="graduatoria" min="-2" pref="44" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -130,12 +130,12 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="inviaRisultati">
+    <Component class="javax.swing.JButton" name="graduatoria">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Invia Risultati"/>
+        <Property name="text" type="java.lang.String" value="Graduatoria"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="inviaRisultatiActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="graduatoriaActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

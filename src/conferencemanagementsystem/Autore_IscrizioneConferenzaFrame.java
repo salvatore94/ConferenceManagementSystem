@@ -11,6 +11,7 @@ import static conferencemanagementsystem.MainClass.db;
 import static conferencemanagementsystem.MainClass.scadutaIscrizione;
 import static conferencemanagementsystem.MainClass.utente;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
@@ -126,7 +127,7 @@ public class Autore_IscrizioneConferenzaFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void partecipaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_partecipaActionPerformed
-        if (scadutaIscrizione) {
+        if (LocalDate.now().isAfter(conferenza.getScadenzaSottomissioneArticoli())) {
            creaJDialog("Errore", "Conferenza iniziata");
            
         } else {

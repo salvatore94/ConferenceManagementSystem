@@ -31,9 +31,6 @@ public class Chair_ListaRecensioniFrame extends javax.swing.JFrame {
     public Chair_ListaRecensioniFrame() {
         initComponents();
         recensioni = preparaTabella();
-        if (scadutaSottomissioneRivisto = false) {
-            inviaRisultati.setEnabled(false);
-        }
     }
     
     
@@ -120,7 +117,7 @@ public class Chair_ListaRecensioniFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
-        inviaRisultati = new javax.swing.JButton();
+        graduatoria = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -165,10 +162,10 @@ public class Chair_ListaRecensioniFrame extends javax.swing.JFrame {
             table.getColumnModel().getColumn(6).setResizable(false);
         }
 
-        inviaRisultati.setText("Invia Risultati");
-        inviaRisultati.addActionListener(new java.awt.event.ActionListener() {
+        graduatoria.setText("Graduatoria");
+        graduatoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inviaRisultatiActionPerformed(evt);
+                graduatoriaActionPerformed(evt);
             }
         });
 
@@ -186,7 +183,7 @@ public class Chair_ListaRecensioniFrame extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(inviaRisultati, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(graduatoria, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -197,50 +194,21 @@ public class Chair_ListaRecensioniFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(inviaRisultati, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(graduatoria, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void inviaRisultatiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inviaRisultatiActionPerformed
-        int numeroArticoliAmmessi = conferenza.getNumeroArticoli();
-        if (numeroArticoliAmmessi > recensioni.size()){
-            //tutti gli articoli recensiti sono accettati
-            for(int i=0; i<recensioni.size(); i++) {
-                String sql = "UPDATE articoli SET ammesso=true WHERE idArticolo = ?";
-                PreparedStatement stat;
-                try {
-                    stat = db.getDBConnection().prepareStatement(sql);
-                    stat.setInt(1, recensioni.get(i).getIdArticolo());
-                    
-                    stat.executeUpdate();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Chair_ListaRecensioniFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        } else {
-            for(int i=0; i<numeroArticoliAmmessi; i++) {
-                String sql = "UPDATE articoli SET ammesso=true WHERE idArticolo = ?";
-                PreparedStatement stat;
-                try {
-                    stat = db.getDBConnection().prepareStatement(sql);
-                    stat.setInt(1, recensioni.get(i).getIdArticolo());
-                    
-                    stat.executeUpdate();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Chair_ListaRecensioniFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
+    private void graduatoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graduatoriaActionPerformed
+        Chair_ListaRecensioni_GraduatoriaFrame graduatoriaF = new Chair_ListaRecensioni_GraduatoriaFrame();
+        graduatoriaF.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        graduatoriaF.setVisible(true);
         
-        
-        //A questo punto si inviano le email agli autori
-        
-        
-        creaJDialog("Successo", "Esiti registrati");
-    }//GEN-LAST:event_inviaRisultatiActionPerformed
+        this.dispose();
+
+    }//GEN-LAST:event_graduatoriaActionPerformed
     
     private void creaJDialog(String title, String mess) {
         JDialog err = new JDialog(this, title, true);
@@ -286,7 +254,7 @@ public class Chair_ListaRecensioniFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton inviaRisultati;
+    private javax.swing.JButton graduatoria;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable table;

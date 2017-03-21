@@ -10,6 +10,7 @@ import static conferencemanagementsystem.MainClass.db;
 import static conferencemanagementsystem.MainClass.scadutaSottomissione;
 import static conferencemanagementsystem.MainClass.utente;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
@@ -152,7 +153,7 @@ public class Autore_SottomettiFrame extends javax.swing.JFrame {
            creaJDialog("Errore", "Completare tutti i campi di testo");
        } else if (controllaUnivocita(titolo) == false) {
            creaJDialog("Errore", "Articolo precedentemente inserito");
-       } else if (scadutaSottomissione) {
+       } else if (LocalDate.now().isAfter(conferenza.getScadenzaSottomissioneArticoli())) {
            creaJDialog("Errore", "Scaduta finestra di Sottomissione Articolo");
            this.dispose();
            
@@ -213,6 +214,13 @@ public class Autore_SottomettiFrame extends javax.swing.JFrame {
                     Logger.getLogger(Autore_IscrizioneConferenzaFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
                
+               //Invio una email di conferma
+               //Manda email
+               String mittente = ""; 
+               String oggetto = "Conferenza " + conferenza.getNome();
+               String  corpo = "L'articolo sottomesso è stato ricevuto ed aggiunto alla lista degli articoli da recensire.";
+               EmailClass email = new EmailClass(mittente, utente.getEmail(),  oggetto, corpo);
+               //email.inviaEmail();
                
                creaJDialog("Successo", "Articolo Sottomesso");
                this.dispose();

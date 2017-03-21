@@ -7,6 +7,7 @@ package conferencemanagementsystem;
 
 import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.utente;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -177,6 +178,14 @@ public class Chair_ComitatoDiProgramma_InvitaMembroFrame extends javax.swing.JFr
                Logger.getLogger(Chair_ComitatoDiProgrammaFrame.class.getName()).log(Level.SEVERE, null, ex);
            }
            
+           
+           //Invio una email di conferma
+               //Manda email
+               String oggetto = "Conferenza " + conferenza.getNome();
+               String  corpo = "L'articolo sottomesso è stato ricevuto ed aggiunto alla lista degli articoli da recensire.";
+               EmailClass email1 = new EmailClass(utente.getEmail(), email, oggetto, corpo);
+               //email1.inviaEmail();
+               
            creaJDialog("Successo", "Utente inserito nel Comitato di Programma");
            this.dispose();
            

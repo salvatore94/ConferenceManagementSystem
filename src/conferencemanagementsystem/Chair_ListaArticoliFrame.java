@@ -111,7 +111,6 @@ public class Chair_ListaArticoliFrame extends javax.swing.JFrame {
         table = new javax.swing.JTable();
         scarica = new javax.swing.JButton();
         elimina = new javax.swing.JButton();
-        stampaProceedings = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -165,13 +164,6 @@ public class Chair_ListaArticoliFrame extends javax.swing.JFrame {
             }
         });
 
-        stampaProceedings.setText("Stampa Proceedings");
-        stampaProceedings.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stampaProceedingsActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -181,9 +173,7 @@ public class Chair_ListaArticoliFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(scarica)
-                        .addGap(51, 51, 51)
-                        .addComponent(stampaProceedings)
-                        .addGap(51, 51, 51)
+                        .addGap(272, 272, 272)
                         .addComponent(elimina))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addContainerGap()
@@ -203,8 +193,7 @@ public class Chair_ListaArticoliFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(scarica, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(elimina, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(stampaProceedings, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(elimina, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10))
         );
 
@@ -244,10 +233,6 @@ public class Chair_ListaArticoliFrame extends javax.swing.JFrame {
             creaJDialog("Errore", "Selezionare l'articolo da rimuovere");
         }
     }//GEN-LAST:event_eliminaActionPerformed
-
-    private void stampaProceedingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stampaProceedingsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_stampaProceedingsActionPerformed
     
     private void creaJDialog(String title, String mess) {
         JDialog err = new JDialog(this, title, true);
@@ -297,7 +282,6 @@ public class Chair_ListaArticoliFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton scarica;
-    private javax.swing.JButton stampaProceedings;
     private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }

@@ -12,6 +12,7 @@ import static conferencemanagementsystem.MainClass.utente;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -333,7 +334,7 @@ public class Recensore_SottomettiRecensioneFrame extends javax.swing.JFrame {
     private void sottomettiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sottomettiActionPerformed
         int row = table.getSelectedRow();
         if (row != -1) {
-          if (scadutaReview) {
+          if (LocalDate.now().isAfter(conferenza.getScadenzaReview())) {
             creaJDialog("Errore", "Scaduta finestra di Sottomissione Recensione");
             this.dispose();
            
