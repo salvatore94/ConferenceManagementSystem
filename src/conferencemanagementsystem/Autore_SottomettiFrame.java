@@ -255,9 +255,18 @@ public class Autore_SottomettiFrame extends javax.swing.JFrame {
                     Logger.getLogger(Autore_IscrizioneConferenzaFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
                
+               //Invio una email di conferma
+               //Manda email
+               String mittente = ""; 
+               String oggetto = "Conferenza " + conferenza.getNome();
+               String  corpo = "L'articolo sottomesso è stato ricevuto ed aggiunto alla lista degli articoli da recensire.";
+               EmailClass email = new EmailClass(mittente, utente.getEmail(),  oggetto, corpo);
+               //email.inviaEmail();
                
                creaJDialog("Successo", "Articolo Sottomesso");
                this.dispose();
+               
+               
                RecensoreFrame recensore = new RecensoreFrame();
                recensore.setDefaultCloseOperation(EXIT_ON_CLOSE);
                recensore.setVisible(true);

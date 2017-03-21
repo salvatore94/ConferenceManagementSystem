@@ -238,7 +238,63 @@ public class Chair_ListaRecensioni_GraduatoriaFrame extends javax.swing.JFrame {
 
         
         //A questo punto si inviano le email agli autori
+        String sql = "SELECT * FROM articoli WHERE ammesso=true";
+        PreparedStatement stat;
+        ArrayList<UtenteClass> autoriAmmessi = new ArrayList<UtenteClass>();
+        ArrayList<ArticoloClass> articoliAmmessi = new ArrayList<ArticoloClass>();
         
+          try {
+              stat = db.getDBConnection().prepareStatement(sql);
+              ResultSet result = stat.executeQuery();
+              
+              while (result.next()){
+                  UtenteClass autore = new UtenteClass();
+                  autore.setId(result.getInt("idUtente"));
+                  
+                  autoriAmmessi.add(autore);
+                  
+                  ArticoloClass articolo = new ArticoloClass();
+                  articolo.setIdArticolo(result.getInt("idArticolo"));
+                  articolo.setIdAutore(result.getInt("idAutore"));
+                  articolo.setTitolo(result.getString("titolo"));
+                  articolo.setTema("tema");
+                  
+                  articoliAmmessi.add(articolo);
+                  
+              }
+          } catch (SQLException ex) {
+              Logger.getLogger(Chair_ListaRecensioni_GraduatoriaFrame.class.getName()).log(Level.SEVERE, null, ex);
+          }
+        
+        for (int i=0; i<autoriAmmessi.size(); i++) {
+            sql = "SELECT * FROM utenti WHERE idUtente=?";
+            try {
+                stat = db.getDBConnection().prepareStatement(sql);
+                stat.setInt(1, autoriAmmessi.get(i).getId());
+                
+                ResultSet result = stat.executeQuery();
+                
+                while(result.next()) {
+                    autoriAmmessi.get(i).setNome("nome");
+                    autoriAmmessi.get(i).setCognome("cognome");
+                    autoriAmmessi.get(i).setEmail("email");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Chair_ListaRecensioni_GraduatoriaFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        String mittente = "";
+        String oggetto = "Articolo ammesso alla conferenza";
+        String corpo = "Titolo articolo: ";
+        
+        for (int i=0; i<autoriAmmessi.size(); i++) {
+            String destinatario = autoriAmmessi.get(i).getEmail();
+            corpo = corpo + " " + articoliAmmessi.get(i).getTitolo();
+            
+            EmailClass email = new EmailClass(mittente, destinatario, oggetto, corpo);
+            //email.inviaEmail();
+        }
         
         creaJDialog("Successo", "Esiti registrati");
         
