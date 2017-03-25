@@ -25,7 +25,7 @@ public class MainClass {
     static boolean scadutaReview = false;
     
     public static void main(String[] args)  {
-        
+            
             StartFrame startF = new StartFrame(new javax.swing.JFrame(), true);
             startF.setVisible(true);
         try {

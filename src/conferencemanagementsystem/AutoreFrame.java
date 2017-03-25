@@ -5,6 +5,7 @@
  */
 package conferencemanagementsystem;
 
+import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
 import static conferencemanagementsystem.MainClass.scadutaSottomissione;
 import static conferencemanagementsystem.MainClass.scadutaSottomissioneRivisto;
@@ -12,6 +13,7 @@ import static conferencemanagementsystem.MainClass.utente;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,12 +34,13 @@ public class AutoreFrame extends javax.swing.JFrame {
         if (controllaPresenzaArticoli() == false) {
             listaArticoli.setEnabled(false);
         }
-        if (scadutaSottomissione = true) {
+        if (scadutaSottomissione == true) {
             sottomettiArticolo.setEnabled(false);
-        }
-        if (scadutaSottomissioneRivisto = true) {
+        } 
+        if (scadutaSottomissioneRivisto == true) {
             sottomettiRivisto.setEnabled(false);
         }
+        
     }
 
     /**

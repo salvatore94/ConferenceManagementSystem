@@ -32,7 +32,7 @@ public class RecensoreFrame extends javax.swing.JFrame {
             partecipa.setEnabled(true);
             pannelloAutore.setEnabled(false);
         }
-        if (scadutaReview = true) {
+        if (scadutaReview == true) {
             sottomettiRecensione.setEnabled(false);
             invitaSottorecensore.setEnabled(false);
         }
