@@ -6,6 +6,9 @@
 package conferencemanagementsystem;
 
 import static conferencemanagementsystem.MainClass.utente;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
@@ -151,9 +154,13 @@ public class Chair_ComitatoDiProgramma_InviaEmailFrame extends javax.swing.JFram
         String corpo = corpoField.getText().trim();
         
         if (corpo.isEmpty() == false) {
-        //Manda email
-           EmailClass email = new EmailClass(utente.getEmail(), destinatario,  oggetto, corpo);
-           //email.inviaEmail();
+        //Manda email utente.getEmail()
+           EmailClass email = new EmailClass(utente.getEmail(), this.getDestinatario(),  oggetto, corpo);
+            try {
+                email.inviaEmail();
+            } catch (MessagingException ex) {
+                Logger.getLogger(Chair_ComitatoDiProgramma_InviaEmailFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
            creaJDialog("Successo", "Email inviata");
            this.dispose();
         } else {
