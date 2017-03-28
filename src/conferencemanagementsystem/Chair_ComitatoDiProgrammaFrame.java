@@ -7,6 +7,7 @@ package conferencemanagementsystem;
 
 import static conferencemanagementsystem.MainClass.db;
 import static conferencemanagementsystem.MainClass.scadutaReview;
+import static conferencemanagementsystem.MainClass.scadutaSottomissione;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,6 +33,9 @@ public class Chair_ComitatoDiProgrammaFrame extends javax.swing.JFrame {
         if (scadutaReview == true) {
             invita.setEnabled(false);
             rimuovi.setEnabled(false);
+            assegna.setEnabled(false);
+        }
+        if (scadutaSottomissione == false) {
             assegna.setEnabled(false);
         }
     }
@@ -209,7 +213,7 @@ public class Chair_ComitatoDiProgrammaFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addGap(10, 10, 10)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );

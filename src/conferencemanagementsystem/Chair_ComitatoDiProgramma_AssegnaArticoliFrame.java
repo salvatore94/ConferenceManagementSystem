@@ -5,8 +5,11 @@
  */
 package conferencemanagementsystem;
 
+import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
+import static conferencemanagementsystem.MainClass.scadutaSottomissione;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +30,10 @@ public class Chair_ComitatoDiProgramma_AssegnaArticoliFrame extends javax.swing.
         initComponents();
         preparaTabellaRecensori();
         preparaTabellaArticoli();
+        
+        if (scadutaSottomissione == false) {
+            assegna.setEnabled(false);
+        }
     }
     
     private void preparaTabellaRecensori() {
@@ -342,6 +349,8 @@ public class Chair_ComitatoDiProgramma_AssegnaArticoliFrame extends javax.swing.
     }// </editor-fold>//GEN-END:initComponents
 
     private void assegnaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assegnaActionPerformed
+       
+  if (LocalDate.now().isAfter(conferenza.getScadenzaSottomissioneArticoli())) {      
        int row1 = tableRecensori.getSelectedRow();
        int row2 = tableArticoli.getSelectedRow();
        
@@ -385,6 +394,10 @@ public class Chair_ComitatoDiProgramma_AssegnaArticoliFrame extends javax.swing.
     } else {
          creaJDialog("Errore", "Selezionare il recensore e l'articolo"); 
     }
+    
+  } else {
+      // dovrebbe ricreare la finestra
+  }
 
     }//GEN-LAST:event_assegnaActionPerformed
     private boolean haGiaArticoli(int idRecensore) {
