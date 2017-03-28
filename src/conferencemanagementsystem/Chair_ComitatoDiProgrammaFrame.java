@@ -29,7 +29,7 @@ public class Chair_ComitatoDiProgrammaFrame extends javax.swing.JFrame {
     public Chair_ComitatoDiProgrammaFrame() {
         initComponents();
         preparaTabella();
-        if (scadutaReview = true) {
+        if (scadutaReview == true) {
             invita.setEnabled(false);
             rimuovi.setEnabled(false);
             assegna.setEnabled(false);
