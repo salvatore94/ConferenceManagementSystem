@@ -28,7 +28,7 @@ public class DataBaseManagement {
             System.err.println(e);
         }
     }
-    
+
     public void creaDB() throws SQLException{
         Statement stat = con.createStatement();
         
