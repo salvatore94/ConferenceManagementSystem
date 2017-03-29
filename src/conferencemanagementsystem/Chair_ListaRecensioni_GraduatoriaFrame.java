@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.MessagingException;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
@@ -293,7 +294,11 @@ public class Chair_ListaRecensioni_GraduatoriaFrame extends javax.swing.JFrame {
             corpo = corpo + " " + articoliAmmessi.get(i).getTitolo();
             
             EmailClass email = new EmailClass(mittente, destinatario, oggetto, corpo);
-            //email.inviaEmail();
+            try {
+                email.inviaEmail();
+            } catch (MessagingException ex) {
+                Logger.getLogger(Chair_ListaRecensioni_GraduatoriaFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
         creaJDialog("Successo", "Esiti registrati");
