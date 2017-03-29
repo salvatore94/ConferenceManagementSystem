@@ -58,7 +58,8 @@ public class DataBaseManagement {
                    "(idConferenza INTEGER NOT NULL AUTO_INCREMENT, " +
                    " idChair INTEGER NOT NULL, " +
                    " nome VARCHAR(255) NOT NULL, " + 
-                   " tema VARCHAR(255) NOT NULL, " + 
+                   " tema VARCHAR(255) NOT NULL, " +
+                   " luogo VARCHAR(255) NOT NULL, " +
                    " numeroArticoli INT NOT NULL, " +
                    " inizio DATE, " +
                    " fine DATE, " +

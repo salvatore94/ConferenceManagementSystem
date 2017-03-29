@@ -272,6 +272,7 @@ public class LoginFrame extends javax.swing.JFrame {
             conferenza.setIdChair(result.getInt("idChair"));
             conferenza.setNome(result.getString("nome"));
             conferenza.setTema(result.getString("tema"));
+            conferenza.setLuogo(result.getString("luogo"));
             conferenza.setNumeroArticoli(result.getInt("numeroArticoli"));
             conferenza.setInizo(result.getObject("inizio", LocalDate.class));
             conferenza.setFine(result.getObject("fine", LocalDate.class));

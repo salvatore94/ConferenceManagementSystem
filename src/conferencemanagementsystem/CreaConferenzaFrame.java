@@ -59,10 +59,12 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         nomeConferenzaField = new javax.swing.JTextField();
         temaConferenzaField = new javax.swing.JTextField();
         numeroArticoliField = new javax.swing.JTextField();
+        luogoConferenzaField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Creazione di una Conferenza");
@@ -173,6 +175,8 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
 
         jLabel4.setText("Numero di articoli consentiti");
 
+        jLabel10.setText("Luogo");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -182,8 +186,9 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3)
+                    .addComponent(jLabel10)
                     .addComponent(jLabel4))
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addGap(122, 122, 122))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,9 +197,11 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
+                .addGap(24, 24, 24)
+                .addComponent(jLabel10)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -202,12 +209,16 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(nomeConferenzaField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(temaConferenzaField, javax.swing.GroupLayout.Alignment.TRAILING))
-                    .addComponent(numeroArticoliField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(nomeConferenzaField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(temaConferenzaField, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(numeroArticoliField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(luogoConferenzaField, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -217,7 +228,9 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
                 .addComponent(nomeConferenzaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(temaConferenzaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(luogoConferenzaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
                 .addComponent(numeroArticoliField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -244,10 +257,10 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -273,25 +286,28 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
         int numeroArticoliAmmessi = Integer.parseInt(numeroArticoliField.getText());
         String nomeConferenza = nomeConferenzaField.getText().trim();
         String temaConferenza = temaConferenzaField.getText().trim();
+        String luogoConferenza = luogoConferenzaField.getText().trim();
+        
         
         String sql;
         PreparedStatement stat;
         ResultSet result = null;
         
-        sql = "INSERT INTO conferenza (idChair, nome, tema, numeroArticoli, inizio, fine, scadenzaSottomissione, scadenzaReview, scadenzaSottomissioneRivisti) " +
-                     " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        sql = "INSERT INTO conferenza (idChair, nome, tema, luogo, numeroArticoli, inizio, fine, scadenzaSottomissione, scadenzaReview, scadenzaSottomissioneRivisti) " +
+                     " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try {
             stat =  db.getDBConnection().prepareStatement(sql);
             stat.setInt(1, utente.getId());
             stat.setString(2, nomeConferenza);
             stat.setString(3, temaConferenza);
-            stat.setInt(4, (int) numeroArticoliAmmessi);
-            stat.setObject(5, inizio);
-            stat.setObject(6, fine);
-            stat.setObject(7, scadenzaSottomissione);
-            stat.setObject(8, scadenzaReview);
-            stat.setObject(9, scadenzaCorretti);
+            stat.setString(4, luogoConferenza);
+            stat.setInt(5, (int) numeroArticoliAmmessi);
+            stat.setObject(6, inizio);
+            stat.setObject(7, fine);
+            stat.setObject(8, scadenzaSottomissione);
+            stat.setObject(9, scadenzaReview);
+            stat.setObject(10, scadenzaCorretti);
             
             stat.executeUpdate();
             
@@ -326,6 +342,7 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
     private void pulisciField() {
         nomeConferenzaField.setText("");
         temaConferenzaField.setText("");
+        luogoConferenzaField.setText("");
         dataInizioField.setText("");
         dataFineField.setText("");
         scadenzaSottomissioneField.setText("");
@@ -373,6 +390,7 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField dataFineField;
     private javax.swing.JFormattedTextField dataInizioField;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -385,6 +403,7 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JTextField luogoConferenzaField;
     private javax.swing.JTextField nomeConferenzaField;
     private javax.swing.JTextField numeroArticoliField;
     private javax.swing.JFormattedTextField scadenzaCorrettiField;

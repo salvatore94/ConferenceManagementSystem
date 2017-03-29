@@ -16,6 +16,7 @@ public class ConferenzaClass {
     private int idChair;
     private String nome;
     private String tema;
+    private String luogo;
     private int numeroArticoli;
     
     private LocalDate inizo;
@@ -31,6 +32,14 @@ public class ConferenzaClass {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getLuogo() {
+        return luogo;
+    }
+
+    public void setLuogo(String luogo) {
+        this.luogo = luogo;
     }
     
     
