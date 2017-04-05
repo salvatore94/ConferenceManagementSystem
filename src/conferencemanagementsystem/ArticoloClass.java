@@ -26,8 +26,6 @@ public class ArticoloClass {
         this.file_rivisto = file_rivisto;
     }
 
-    
-    private UtenteClass autore;
 
     public ArticoloClass(int idArticolo, int idAutore, String titolo, String tema, String file) {
         this.idArticolo = idArticolo;
@@ -35,8 +33,6 @@ public class ArticoloClass {
         this.titolo = titolo;
         this.tema = tema;
         this.file = file;
-        
-       // this.setAutore();
         
     }
     public ArticoloClass() {}
@@ -91,12 +87,5 @@ public class ArticoloClass {
         this.ammesso = ammesso;
     }
 
-    public UtenteClass getAutore() {
-        return autore;
-    }
 
-    public void setAutore() {
-        //Query per trovare l'autore dal db utenti a partire dell'idUtente
-    }
-    
 }

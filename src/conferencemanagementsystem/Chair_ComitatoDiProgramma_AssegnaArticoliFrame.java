@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.MessagingException;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
@@ -356,7 +357,9 @@ public class Chair_ComitatoDiProgramma_AssegnaArticoliFrame extends javax.swing.
        
     if (row1 != -1 && row2 != -1) {     
         int idRecensore = (int) tableRecensori.getValueAt(row1, 0);
+        String emailRecensore = (String) tableRecensori.getValueAt(row1, 3);
         int idArticolo = (int) tableArticoli.getValueAt(row2, 0);
+        String titoloArticolo = (String) tableArticoli.getValueAt(row2, 1);
         
         if (recensoreAutore(idRecensore, idArticolo) == true) {
             creaJDialog("Errore", "Articolo scritto dallo stesso recensore");
@@ -370,11 +373,23 @@ public class Chair_ComitatoDiProgramma_AssegnaArticoliFrame extends javax.swing.
                     stat.setInt(2, idRecensore);
                 
                     stat.executeUpdate();
+                    
+                    // invia email
+                    String mittente = ""; 
+                    String oggetto = "Conferenza " + conferenza.getNome();
+                    String  corpo = "Assegnazione articolo da recensire. Titolo: " + titoloArticolo;
+                    EmailClass email = new EmailClass(mittente, emailRecensore,  oggetto, corpo);
+                   try {
+                       email.inviaEmail();
+                   } catch (MessagingException ex) {
+                       Logger.getLogger(Autore_SottomettiFrame.class.getName()).log(Level.SEVERE, null, ex);
+                   }
+                    
                     creaJDialog("Successo", "Articolo Assegnato");
                 } catch (SQLException ex) {
                     Logger.getLogger(Chair_ComitatoDiProgramma_AssegnaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
-        
+                
         
             } else  {
                 String sql = "INSERT INTO comitato (idUtente, idArticolo) VALUES (?, ?)";
@@ -385,6 +400,18 @@ public class Chair_ComitatoDiProgramma_AssegnaArticoliFrame extends javax.swing.
                    stat.setInt(2, idArticolo);
             
                    stat.executeUpdate();
+                   
+                   // invia email
+                    String mittente = ""; 
+                    String oggetto = "Conferenza " + conferenza.getNome();
+                    String  corpo = "Assegnazione articolo da recensire. Titolo: " + titoloArticolo;
+                    EmailClass email = new EmailClass(mittente, emailRecensore,  oggetto, corpo);
+                   try {
+                       email.inviaEmail();
+                   } catch (MessagingException ex) {
+                       Logger.getLogger(Autore_SottomettiFrame.class.getName()).log(Level.SEVERE, null, ex);
+                   }
+                   
                    creaJDialog("Successo", "Articolo Assegnato");
                 } catch (SQLException ex) {
                      Logger.getLogger(Chair_ComitatoDiProgramma_AssegnaArticoliFrame.class.getName()).log(Level.SEVERE, null, ex);

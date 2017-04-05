@@ -219,7 +219,7 @@ public class LoginFrame extends javax.swing.JFrame {
             
             if (result.next()) {
                     //è il chair
-                   ruolo = 1;                  
+                   ruolo = 1; 
                 }
             
         } catch (SQLException ex) {

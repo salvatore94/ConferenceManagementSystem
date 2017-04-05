@@ -14,6 +14,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.MessagingException;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.table.*;
@@ -159,7 +160,20 @@ public class Autore_IscrizioneConferenzaFrame extends javax.swing.JFrame {
             Logger.getLogger(Autore_IscrizioneConferenzaFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
        
+       // invia email
+       String mittente = ""; 
+       String oggetto = "Conferenza " + conferenza.getNome();
+       String  corpo = "Iscrizone alla conferenza: " + conferenza.getNome() + " Data inizio: " + conferenza.getInizio() + 
+                        " Data Fine: " + conferenza.getFine() + " Data scadenza sottomissione articolo: " + conferenza.getScadenzaSottomissioneArticoli() +
+                        " Data scadenza recensione articoli: " + conferenza.getScadenzaReview() + 
+                        " Data scadenza sottomissione articoli rivisti: " + conferenza.getScadenzaSottomissioneCorretti();
        
+       EmailClass email = new EmailClass(mittente, utente.getEmail(),  oggetto, corpo);
+       try {
+            email.inviaEmail();
+        } catch (MessagingException ex) {
+            Logger.getLogger(Autore_SottomettiFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
        
        AutoreFrame autoreF = new AutoreFrame();
        autoreF.setDefaultCloseOperation(EXIT_ON_CLOSE);

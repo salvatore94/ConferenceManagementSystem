@@ -114,19 +114,4 @@ public class DataBaseManagement {
         return con;
     }
     
-    public ResultSet inviaQuery (String query)  {
-        
-        if (con != null) {
-            try {
-                Statement stat = con.createStatement();
-                ResultSet result = stat.executeQuery(query);
-                return result;
-            } catch (SQLException ex) {
-                Logger.getLogger(DataBaseManagement.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-        } 
-            return null;
-        
-    }
 }

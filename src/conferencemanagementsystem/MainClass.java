@@ -35,7 +35,5 @@ public class MainClass {
             Logger.getLogger(MainClass.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-    }
-
-    
+    }  
 }

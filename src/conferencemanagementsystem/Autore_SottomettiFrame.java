@@ -13,6 +13,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.MessagingException;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
@@ -231,7 +232,11 @@ public class Autore_SottomettiFrame extends javax.swing.JFrame {
                String oggetto = "Conferenza " + conferenza.getNome();
                String  corpo = "L'articolo sottomesso è stato ricevuto ed aggiunto alla lista degli articoli da recensire.";
                EmailClass email = new EmailClass(mittente, utente.getEmail(),  oggetto, corpo);
-               //email.inviaEmail();
+                   try {
+                       email.inviaEmail();
+                   } catch (MessagingException ex) {
+                       Logger.getLogger(Autore_SottomettiFrame.class.getName()).log(Level.SEVERE, null, ex);
+                   }
                
                creaJDialog("Successo", "Articolo Sottomesso");
                this.dispose();
@@ -272,7 +277,11 @@ public class Autore_SottomettiFrame extends javax.swing.JFrame {
                String oggetto = "Conferenza " + conferenza.getNome();
                String  corpo = "L'articolo sottomesso è stato ricevuto ed aggiunto alla lista degli articoli da recensire.";
                EmailClass email = new EmailClass(mittente, utente.getEmail(),  oggetto, corpo);
-               //email.inviaEmail();
+                   try {
+                       email.inviaEmail();
+                   } catch (MessagingException ex) {
+                       Logger.getLogger(Autore_SottomettiFrame.class.getName()).log(Level.SEVERE, null, ex);
+                   }
                
                creaJDialog("Successo", "Articolo Sottomesso");
                this.dispose();

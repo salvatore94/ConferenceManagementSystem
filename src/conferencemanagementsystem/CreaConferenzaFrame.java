@@ -280,8 +280,6 @@ public class CreaConferenzaFrame extends javax.swing.JFrame {
         java.time.LocalDate scadenzaSottomissione = LocalDateTime.ofInstant(Instant.ofEpochMilli(((java.util.Date)scadenzaSottomissioneField.getValue()).getTime()), ZoneId.systemDefault()).toLocalDate();
         java.time.LocalDate scadenzaReview = LocalDateTime.ofInstant(Instant.ofEpochMilli(((java.util.Date)scadenzaReviewField.getValue()).getTime()), ZoneId.systemDefault()).toLocalDate();
         java.time.LocalDate scadenzaCorretti = LocalDateTime.ofInstant(Instant.ofEpochMilli(((java.util.Date)scadenzaCorrettiField.getValue()).getTime()), ZoneId.systemDefault()).toLocalDate();
-
-        System.out.println(inizio);
         
         int numeroArticoliAmmessi = Integer.parseInt(numeroArticoliField.getText());
         String nomeConferenza = nomeConferenzaField.getText().trim();
