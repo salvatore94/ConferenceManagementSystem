@@ -292,7 +292,7 @@ public class Chair_ListaRecensioni_GraduatoriaFrame extends javax.swing.JFrame {
         for (int i=0; i<autoriAmmessi.size(); i++) {
             String destinatario = autoriAmmessi.get(i).getEmail();
             corpo = corpo + " " + articoliAmmessi.get(i).getTitolo();
-            
+            corpo = corpo + "  Commento del recensore: " + recensioni.get(i).getCommento();
             EmailClass email = new EmailClass(mittente, destinatario, oggetto, corpo);
             try {
                 email.inviaEmail();

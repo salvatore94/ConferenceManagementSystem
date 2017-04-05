@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.MessagingException;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
@@ -182,9 +183,13 @@ public class Chair_ComitatoDiProgramma_InvitaMembroFrame extends javax.swing.JFr
            //Invio una email di conferma
                //Manda email
                String oggetto = "Conferenza " + conferenza.getNome();
-               String  corpo = "L'articolo sottomesso è stato ricevuto ed aggiunto alla lista degli articoli da recensire.";
+               String  corpo = "Invito a far parte del Comitato di Programma";
                EmailClass email1 = new EmailClass(utente.getEmail(), email, oggetto, corpo);
-               //email1.inviaEmail();
+               try {
+                    email1.inviaEmail();
+               } catch (MessagingException ex) {
+                    Logger.getLogger(Chair_ComitatoDiProgramma_InvitaMembroFrame.class.getName()).log(Level.SEVERE, null, ex);
+              }
                
            creaJDialog("Successo", "Utente inserito nel Comitato di Programma");
            this.dispose();
