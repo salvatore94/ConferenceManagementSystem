@@ -5,6 +5,7 @@
  */
 package conferencemanagementsystem;
 
+import conferencemanagementsystem.Utils.DataBaseManagement;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,10 +21,10 @@ public class MainClass {
     static public DataBaseManagement db = new DataBaseManagement();
     static public ConferenzaClass conferenza = new ConferenzaClass();
     
-    static boolean scadutaIscrizione = false;
-    static boolean scadutaSottomissione = false;
-    static boolean scadutaSottomissioneRivisto = false;
-    static boolean scadutaReview = false;
+    public static boolean scadutaIscrizione = false;
+    public static boolean scadutaSottomissione = false;
+    public static boolean scadutaSottomissioneRivisto = false;
+    public static boolean scadutaReview = false;
     
     public static void main(String[] args)  {
             

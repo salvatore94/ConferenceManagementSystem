@@ -5,6 +5,10 @@
  */
 package conferencemanagementsystem;
 
+import conferencemanagementsystem.Chair.ChairFrame;
+import conferencemanagementsystem.Recensore.RecensoreFrame;
+import conferencemanagementsystem.Autore.AutoreFrame;
+import conferencemanagementsystem.Autore.Autore_IscrizioneConferenzaFrame;
 import conferencemanagementsystem.MainClass;
 import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;

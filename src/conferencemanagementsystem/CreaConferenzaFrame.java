@@ -5,6 +5,7 @@
  */
 package conferencemanagementsystem;
 
+import conferencemanagementsystem.Chair.ChairFrame;
 import java.time.*;
 import conferencemanagementsystem.MainClass;
 import static conferencemanagementsystem.MainClass.db;
