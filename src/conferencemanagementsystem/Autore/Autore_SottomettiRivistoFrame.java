@@ -6,8 +6,8 @@
 package conferencemanagementsystem.Autore;
 
 
-import conferencemanagementsystem.ArticoloClass;
-import conferencemanagementsystem.NotificaClass;
+import conferencemanagementsystem.Utils.ArticoloClass;
+import conferencemanagementsystem.Utils.NotificaClass;
 import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
 import static conferencemanagementsystem.MainClass.scadutaSottomissioneRivisto;

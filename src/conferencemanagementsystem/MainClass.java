@@ -5,6 +5,8 @@
  */
 package conferencemanagementsystem;
 
+import conferencemanagementsystem.Utils.ConferenzaClass;
+import conferencemanagementsystem.Utils.UtenteClass;
 import conferencemanagementsystem.Utils.DataBaseManagement;
 import java.sql.*;
 import java.util.logging.Level;

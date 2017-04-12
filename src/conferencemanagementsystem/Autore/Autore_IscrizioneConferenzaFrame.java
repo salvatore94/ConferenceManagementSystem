@@ -6,7 +6,7 @@
 package conferencemanagementsystem.Autore;
 
 import conferencemanagementsystem.Utils.EmailClass;
-import conferencemanagementsystem.NotificaClass;
+import conferencemanagementsystem.Utils.NotificaClass;
 //import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;

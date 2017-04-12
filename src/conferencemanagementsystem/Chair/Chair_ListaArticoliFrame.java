@@ -5,7 +5,7 @@
  */
 package conferencemanagementsystem.Chair;
 
-import conferencemanagementsystem.ArticoloClass;
+import conferencemanagementsystem.Utils.ArticoloClass;
 import conferencemanagementsystem.Autore.Autore_SottomettiRivistoFrame;
 import static conferencemanagementsystem.MainClass.db;
 import static conferencemanagementsystem.MainClass.utente;

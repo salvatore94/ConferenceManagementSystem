@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package conferencemanagementsystem;
+package conferencemanagementsystem.Utils;
 
 /**
  *
@@ -15,16 +15,14 @@ public class UtenteClass {
     private String cognome;
     private String email;
     private String password;
-    private String ruolo;
     
     public UtenteClass (){}
     
-    public UtenteClass(int _idUtente, String _nome, String _cognome, String _email, String _password, String _ruolo) {
+    public UtenteClass(int _idUtente, String _nome, String _cognome, String _email, String _password) {
         this.setId(_idUtente);
         this.setNome(_nome);
         this.setCognome(_cognome);
         this.setPassword(_password);
-        this.setRuolo(_ruolo);
     }
     
     public void setId (int _idUtente){
@@ -69,9 +67,5 @@ public class UtenteClass {
     
     public final String getPassword() {
         return password;
-    }
-    
-    public final String getRuolo () {
-        return ruolo;
     }
 }

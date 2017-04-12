@@ -6,7 +6,7 @@
 package conferencemanagementsystem.Chair;
 
 import conferencemanagementsystem.Autore.Autore_SottomettiRivistoFrame;
-import conferencemanagementsystem.NotificaClass;
+import conferencemanagementsystem.Utils.NotificaClass;
 import static conferencemanagementsystem.MainClass.db;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

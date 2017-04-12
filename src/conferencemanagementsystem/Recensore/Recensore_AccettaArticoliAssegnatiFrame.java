@@ -6,11 +6,11 @@
 
 package conferencemanagementsystem.Recensore;
 
-import conferencemanagementsystem.ArticoloClass;
+import conferencemanagementsystem.Utils.ArticoloClass;
 import conferencemanagementsystem.Autore.Autore_SottomettiRivistoFrame;
 import conferencemanagementsystem.Autore.Autore_IscrizioneConferenzaFrame;
 import conferencemanagementsystem.Chair.Chair_ListaArticoliFrame;
-import conferencemanagementsystem.NotificaClass;
+import conferencemanagementsystem.Utils.NotificaClass;
 import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
 import static conferencemanagementsystem.MainClass.scadutaReview;

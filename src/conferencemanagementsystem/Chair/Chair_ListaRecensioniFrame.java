@@ -6,7 +6,7 @@
 package conferencemanagementsystem.Chair;
 
 import conferencemanagementsystem.Autore.Autore_SottomettiRivistoFrame;
-import conferencemanagementsystem.RecensioneClass;
+import conferencemanagementsystem.Utils.RecensioneClass;
 import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
 import static conferencemanagementsystem.MainClass.scadutaSottomissioneRivisto;

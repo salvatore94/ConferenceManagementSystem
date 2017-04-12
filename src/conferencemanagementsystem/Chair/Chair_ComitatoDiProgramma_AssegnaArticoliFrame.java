@@ -5,11 +5,11 @@
  */
 package conferencemanagementsystem.Chair;
 
-import conferencemanagementsystem.ArticoloClass;
+import conferencemanagementsystem.Utils.ArticoloClass;
 import conferencemanagementsystem.Autore.Autore_SottomettiRivistoFrame;
 import conferencemanagementsystem.Autore.Autore_SottomettiFrame;
 import conferencemanagementsystem.Utils.EmailClass;
-import conferencemanagementsystem.UtenteClass;
+import conferencemanagementsystem.Utils.UtenteClass;
 import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
 import static conferencemanagementsystem.MainClass.scadutaSottomissione;

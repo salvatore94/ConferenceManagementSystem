@@ -5,9 +5,9 @@
  */
 package conferencemanagementsystem.Autore;
 
-import conferencemanagementsystem.ArticoloClass;
+import conferencemanagementsystem.Utils.ArticoloClass;
 import conferencemanagementsystem.Utils.EmailClass;
-import conferencemanagementsystem.NotificaClass;
+import conferencemanagementsystem.Utils.NotificaClass;
 import conferencemanagementsystem.Recensore.RecensoreFrame;
 import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;

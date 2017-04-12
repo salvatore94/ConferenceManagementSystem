@@ -7,7 +7,7 @@ package conferencemanagementsystem.Chair;
 
 import conferencemanagementsystem.Autore.Autore_SottomettiRivistoFrame;
 import conferencemanagementsystem.Utils.EmailClass;
-import conferencemanagementsystem.UtenteClass;
+import conferencemanagementsystem.Utils.UtenteClass;
 import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
 import static conferencemanagementsystem.MainClass.utente;

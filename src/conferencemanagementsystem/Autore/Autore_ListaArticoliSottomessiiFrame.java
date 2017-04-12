@@ -5,7 +5,7 @@
  */
 package conferencemanagementsystem.Autore;
 
-import conferencemanagementsystem.ArticoloClass;
+import conferencemanagementsystem.Utils.ArticoloClass;
 import static conferencemanagementsystem.MainClass.db;
 import static conferencemanagementsystem.MainClass.utente;
 import java.sql.PreparedStatement;
