@@ -45,10 +45,6 @@ public class UtenteClass {
         this.password = _password;
     }
     
-    public void setRuolo (String _ruolo) {
-        ruolo = _ruolo;
-    }
-    
     public int getId(){
         return idUtente;
     }
