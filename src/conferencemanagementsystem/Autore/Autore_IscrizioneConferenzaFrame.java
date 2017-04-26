@@ -7,6 +7,7 @@ package conferencemanagementsystem.Autore;
 
 import conferencemanagementsystem.Utils.EmailClass;
 import conferencemanagementsystem.Utils.NotificaClass;
+import conferencemanagementsystem.Utils.UtenteClass;
 //import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 import static conferencemanagementsystem.MainClass.conferenza;
 import static conferencemanagementsystem.MainClass.db;
@@ -193,23 +194,47 @@ public class Autore_IscrizioneConferenzaFrame extends javax.swing.JFrame {
     }
     
     private void preparaTabella() {
-        Object [] colonne = {"idChair", "nome", "tema", "inizio", "fine", "scadenzaSottomissione"};        
-        Object [] row = new Object[6];
+        Object [] colonne = {"Nome", "Tema", "Luogo", "Data inizio", "Data fine", "Scadenza Sottomissione", "Chair", };        
+        Object [] row = new Object[7];
         
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(colonne);
         
-        row[0] = conferenza.getIdChair();
-        row[1] = conferenza.getNome();
-        row[2] = conferenza.getTema();
+        row[0] = conferenza.getNome();
+        row[1] = conferenza.getTema();
+        row[2] = conferenza.getLuogo();
         row[3] = conferenza.getInizio();
         row[4] = conferenza.getFine();
         row[5] = conferenza.getScadenzaSottomissioneArticoli();
+        row[6] = trovaChair(conferenza.getIdChair()).getNome() + " " + trovaChair(conferenza.getIdChair()).getCognome();
         
         model.addRow(row);
         table.setModel(model);
     }
     
+    private UtenteClass trovaChair(int _id) {
+        UtenteClass _chair = new UtenteClass();
+        
+        String sql = "SELECT * FROM utenti WHERE idUtente=?";
+        try {
+            PreparedStatement stat = db.getDBConnection().prepareStatement(sql);
+            stat.setInt(1, _id);
+            
+            ResultSet result = stat.executeQuery();
+            
+            while (result.next()){
+                _chair.setId(result.getInt("idUtente"));
+                _chair.setNome(result.getString("nome"));
+                _chair.setCognome(result.getString("cognome"));
+                _chair.setEmail(result.getString("email"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Autore_IscrizioneConferenzaFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        return _chair;
+    }
     /**
      * @param args the command line arguments
      */
